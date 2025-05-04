@@ -17,13 +17,13 @@ type Config struct {
 			DBName   string `yaml:"DBName"`
 			TimeZone string `yaml:"Timezone"`
 		} `yaml:"PSQL"`
-		Redis struct {
+		Valkey struct {
 			Host     string `yaml:"Host"`
-			Port     string `yaml:"Port"`
+			Port     int    `yaml:"Port"`
 			DB       int    `yaml:"PSQL"`
 			User     string `yaml:"User"`
 			Password string `yaml:"Password"`
-		} `yaml:"Redis"`
+		} `yaml:"Valkey"`
 	} `yaml:"Database"`
 }
 
@@ -55,11 +55,11 @@ func GetConfig() *Config {
 		config.Database.PSQL.Password = os.Getenv("PSQL_PASSWORD")
 		config.Database.PSQL.DBName = os.Getenv("PSQL_DBNAME")
 		config.Database.PSQL.TimeZone = os.Getenv("PSQL_TIMEZONE")
-		config.Database.Redis.Host = os.Getenv("REDIS_HOST")
-		config.Database.Redis.Port = os.Getenv("REDIS_PORT")
-		config.Database.Redis.DB, _ = strconv.Atoi(os.Getenv("REDIS_DB"))
-		config.Database.Redis.User = os.Getenv("REDIS_USER")
-		config.Database.Redis.Password = os.Getenv("REDIS_PASSWORD")
+		config.Database.Valkey.Host = os.Getenv("REDIS_HOST")
+		config.Database.Valkey.Port, _ = strconv.Atoi(os.Getenv("REDIS_PORT"))
+		config.Database.Valkey.DB, _ = strconv.Atoi(os.Getenv("REDIS_DB"))
+		config.Database.Valkey.User = os.Getenv("REDIS_USER")
+		config.Database.Valkey.Password = os.Getenv("REDIS_PASSWORD")
 	} else {
 		panic("Invalid environment")
 		return nil

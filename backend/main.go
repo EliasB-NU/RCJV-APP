@@ -25,6 +25,7 @@ func main() {
 		psql   = database.GetPSQL(cfg)
 		valkey = database.GetValkey(cfg)
 	)
+	defer valkey.Close()
 	// Init PSQL
 	err := database.InitPSQLDatabase(psql)
 	if err != nil {

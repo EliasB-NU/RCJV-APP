@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
+	glideValkey "github.com/valkey-io/valkey-glide/go/api"
 	"golang.org/x/net/websocket"
 	"gorm.io/gorm"
 	"log"
@@ -15,14 +16,14 @@ import (
 
 type API struct {
 	PSQL    *gorm.DB
-	Valkey  string
+	Valkey  glideValkey.GlideClientCommands
 	CFG     *config.Config
 	Clients map[*websocket.Conn]bool
 
 	LoadedEvents map[uint64]bool
 }
 
-func InitWeb(cfg *config.Config, psql *gorm.DB, valkey string, mst *util.MST) {
+func InitWeb(cfg *config.Config, psql *gorm.DB, valkey glideValkey.GlideClientCommands, mst *util.MST) {
 	var (
 		addrRCJVApp = "0.0.0.0:3006"
 
