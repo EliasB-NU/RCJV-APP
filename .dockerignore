@@ -1,0 +1,14 @@
+README.md
+.github
+.gitignore
+.gitattributes
+webview/dist/
+webview/node_modules/
+adminsite/node_modules
+adminsite/dist/
+.vscode/
+.idea/
+Dockerfile
+docker-stack.yaml
+.dockerignore
+LICENSE

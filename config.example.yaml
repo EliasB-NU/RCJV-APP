@@ -1,0 +1,17 @@
+Database:
+  PSQL:
+    Host: "psql.example.com"
+    Port: 5432
+    User: "showmaster"
+    Password: "password"
+    DBName: "showmaster_db"
+    Timezone: "Europe/Berlin"
+  # You could also use redis
+  # But you need the RedisJSON module installed
+  # I still recommend using Valkey!
+  Valkey:
+    Host: "redis.example.com"
+    Port: 6379
+    User: "showmaster"
+    Password: "password"
+    DB: 0
