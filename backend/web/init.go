@@ -19,8 +19,6 @@ type API struct {
 	Valkey  glideValkey.GlideClientCommands
 	CFG     *config.Config
 	Clients map[*websocket.Conn]bool
-
-	LoadedEvents map[uint64]bool
 }
 
 func InitWeb(cfg *config.Config, psql *gorm.DB, valkey glideValkey.GlideClientCommands, mst *util.MST) {
@@ -81,6 +79,10 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey glideValkey.GlideClientCo
 	api.Post("/login", a.login)                      // <- Email&Password || -> returns new session token
 	api.Delete("/logout", a.logout)                  // <- Token, deletes session
 	api.Post("/checkLogin", a.checkIfUserIsLoggedIn) // -> Bool&Perms, checks if the session is valid and returns the users permissions
+
+	// WebSites
+	rcjvApp.Static("/admin", "/adminsite/dist")
+	rcjvApp.Static("/", "webview/dist/")
 
 	mst.ElapsedTime()
 	// Start server
