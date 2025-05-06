@@ -28,6 +28,37 @@ type BrowserToken struct {
 	User     User
 }
 
+type Institution struct {
+	gorm.Model
+	ID uint64 `gorm:"primaryKey"`
+
+	Name string
+
+	Teams []Team
+}
+
+type League struct {
+	gorm.Model
+	ID uint64 `gorm:"primaryKey"`
+
+	Name string
+
+	Teams []Team
+}
+
+type Team struct {
+	gorm.Model
+	ID uint64 `gorm:"primaryKey"`
+
+	Name string
+
+	InstitutionID uint64 `gorm:"index"`
+	Institution   Institution
+
+	LeagueID uint64 `gorm:"index"`
+	League   League
+}
+
 // InitPSQLDatabase Creates all the necessary tables for the app to work
 func InitPSQLDatabase(db *gorm.DB) error {
 	var err error
@@ -40,6 +71,21 @@ func InitPSQLDatabase(db *gorm.DB) error {
 	err = db.AutoMigrate(&BrowserToken{})
 	if err != nil {
 		return errors.New("failed to auto migrate browser token table: " + err.Error())
+	}
+
+	err = db.AutoMigrate(&Institution{})
+	if err != nil {
+		return errors.New("failed to auto migrate institution table: " + err.Error())
+	}
+
+	err = db.AutoMigrate(&League{})
+	if err != nil {
+		return errors.New("failed to auto migrate league table: " + err.Error())
+	}
+
+	err = db.AutoMigrate(&Team{})
+	if err != nil {
+		return errors.New("failed to auto migrate team table: " + err.Error())
 	}
 
 	// Create initial admin user, if not exists (email: admin@example.com, username: admin, password: admin)
