@@ -1,0 +1,41 @@
+name: robocup_junior_app
+
+description: Eine Flutter-App für Robocup Junior Vöhringen mit einem seitlichen Menü.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+# Projektstruktur (Beispiel):
+# /lib
+#   ├── main.dart          # Hauptdatei mit App-Setup
+#   ├── pages
+#   │    ├── home_page.dart
+#   │    ├── spielplan_page.dart
+#   │    ├── infos_page.dart
+#   │    ├── links_page.dart
+#   │    └── einstellungen_page.dart
+#   ├── widgets
+#   │    └── side_menu.dart
+# /assets                 # (falls Bilder oder andere Assets benötigt werden)
+# pubspec.yaml            # Diese Datei
+
+# Wenn du Assets nutzt, füge sie hier hinzu:
+# flutter:
+#   assets:
+#     - assets/images/
+#     - assets/icons/
