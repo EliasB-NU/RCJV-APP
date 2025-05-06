@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
-	glideValkey "github.com/valkey-io/valkey-glide/go/api"
+	"github.com/valkey-io/valkey-go"
 	"golang.org/x/net/websocket"
 	"gorm.io/gorm"
 	"log"
@@ -16,12 +16,12 @@ import (
 
 type API struct {
 	PSQL    *gorm.DB
-	Valkey  glideValkey.GlideClientCommands
+	Valkey  valkey.Client
 	CFG     *config.Config
 	Clients map[*websocket.Conn]bool
 }
 
-func InitWeb(cfg *config.Config, psql *gorm.DB, valkey glideValkey.GlideClientCommands, mst *util.MST) {
+func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.MST) {
 	var (
 		addrRCJVApp = "0.0.0.0:3006"
 
@@ -81,7 +81,7 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey glideValkey.GlideClientCo
 	api.Post("/checkLogin", a.checkIfUserIsLoggedIn) // -> Bool&Perms, checks if the session is valid and returns the users permissions
 
 	// WebSites
-	rcjvApp.Static("/admin", "/adminsite/dist")
+	rcjvApp.Static("/admin", "adminsite/dist/")
 	rcjvApp.Static("/", "webview/dist/")
 
 	mst.ElapsedTime()

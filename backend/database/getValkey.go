@@ -1,28 +1,22 @@
 package database
 
 import (
-	glideValkey "github.com/valkey-io/valkey-glide/go/api"
+	"fmt"
+	"github.com/valkey-io/valkey-go"
 	"log"
 	"rcjv-app/backend/config"
 )
 
-func GetValkey(cfg *config.Config) glideValkey.GlideClientCommands {
-	options := glideValkey.NewGlideClientConfiguration().
-		WithAddress(&glideValkey.NodeAddress{
-			Host: cfg.Database.Valkey.Host,
-			Port: cfg.Database.Valkey.Port,
-		})
-
-	client, err := glideValkey.NewGlideClient(options)
+func GetValkey(cfg *config.Config) valkey.Client {
+	client, err := valkey.NewClient(valkey.ClientOption{
+		Username:    cfg.Database.Valkey.User,
+		Password:    cfg.Database.Valkey.Password,
+		InitAddress: []string{fmt.Sprintf("%s:%d", cfg.Database.Valkey.Host, cfg.Database.Valkey.Port)},
+		SelectDB:    0,
+	})
 	if err != nil {
-		log.Fatalf("Error getting valkey: %v\n", err)
+		log.Fatalf("Failed to create valkey client: %v\n", err)
 	}
-
-	res, err := client.Ping()
-	if err != nil {
-		log.Fatalf("Error pinging valkey: %v\n", err)
-	}
-	log.Printf("Valkey Ping Response: %v\n", res)
 
 	return client
 }

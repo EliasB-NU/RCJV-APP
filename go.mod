@@ -4,7 +4,7 @@ go 1.24.1
 
 require (
 	github.com/gofiber/fiber/v2 v2.52.6
-	github.com/valkey-io/valkey-glide/go v1.3.2
+	github.com/valkey-io/valkey-go v1.0.59
 	golang.org/x/crypto v0.37.0
 	golang.org/x/net v0.39.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -22,16 +22,16 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/kr/text v0.2.0 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
+	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.61.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
-	google.golang.org/protobuf v1.36.6 // indirect
 )
