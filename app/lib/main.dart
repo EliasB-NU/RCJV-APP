@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'pages/spielplan_page.dart';
 import 'pages/home_page.dart';
 import 'widgets/side_menu.dart';
+import 'pages/einstellungen_part.dart';
+import 'pages/links_page.dart';
+
+
 
 void main() {
   runApp(RobocupJuniorApp());
@@ -26,11 +31,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-    HomePage(),
-    PlaceholderWidget(title: 'Spielplan'),
-    PlaceholderWidget(title: 'Infos'),
-    PlaceholderWidget(title: 'Links'),
-    PlaceholderWidget(title: 'Einstellungen'),
+  HomePage(),
+  SpielplanPage(), // <- wichtig: hier muss SpielplanPage eingebunden sein
+  PlaceholderWidget(title: 'Infos'),
+  LinksPage(),
+  EinstellungenPage(),
   ];
 
   void _onItemTapped(int index) {
