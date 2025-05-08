@@ -89,6 +89,11 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	api.Post("/login", a.login)                      // <- Email&Password || -> returns new session token
 	api.Delete("/logout", a.logout)                  // <- Token, deletes session
 	api.Post("/checkLogin", a.checkIfUserIsLoggedIn) // -> Bool&Perms, checks if the session is valid and returns the users permissions
+	// Admin API - Config
+	api.Get("/config", a.getConfig)            // [Auth] -> Returns config
+	api.Post("/config/update", a.updateConfig) // [Auth] <- Updates the config
+	api.Get("/enabled", a.getEnabled)          // -> Returns state of enabled config
+	api.Get("/name", a.getName)                // -> Returns the current name of the event
 	// Admin API - Users
 	api.Get("/users", a.getUsers)                 // [Auth] -> Returns all users
 	api.Post("/users/create", a.createUser)       // [Auth] <- Creates a new user

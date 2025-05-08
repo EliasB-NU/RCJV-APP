@@ -46,6 +46,14 @@ type Leagues struct {
 	OnStage      bool `json:"onStage"`
 }
 
+type Config struct {
+	gorm.Model
+	ID uint64 `gorm:"primaryKey"`
+
+	AppEnabled bool   `json:"appEnabled"`
+	EventName  string `json:"eventName"`
+}
+
 type Institution struct {
 	gorm.Model
 	ID uint64 `gorm:"primaryKey"`
@@ -85,6 +93,11 @@ func InitPSQLDatabase(db *gorm.DB) error {
 		return errors.New("failed to auto migrate leagues table: " + err.Error())
 	}
 
+	err = db.AutoMigrate(&Config{})
+	if err != nil {
+		return errors.New("failed to auto migrate configs table: " + err.Error())
+	}
+
 	err = db.AutoMigrate(&Institution{})
 	if err != nil {
 		return errors.New("failed to auto migrate institution table: " + err.Error())
@@ -114,7 +127,7 @@ func InitPSQLDatabase(db *gorm.DB) error {
 
 	// Create initial league entry
 	// Check if league entry already exists
-	result = db.Find(&Leagues{})
+	result = db.First(&Leagues{})
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		// Create initial league
 		var leagues = Leagues{
@@ -133,6 +146,27 @@ func InitPSQLDatabase(db *gorm.DB) error {
 		if err != nil {
 			return errors.New("failed to create leagues: " + err.Error())
 		}
+	} else if result.Error != nil {
+		return errors.New("failed to check for leagues: " + result.Error.Error())
+	} else {
+		log.Println("Leagues already exists")
+	}
+
+	// Create config entry
+	result = db.First(&Config{})
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		var config = Config{
+			AppEnabled: false,
+			EventName:  "RCJ - Test",
+		}
+		err = db.Create(&config).Error
+		if err != nil {
+			return errors.New("failed to create config: " + err.Error())
+		}
+	} else if result.Error != nil {
+		return errors.New("failed to check for config: " + result.Error.Error())
+	} else {
+		log.Println("Config already exists")
 	}
 
 	log.Println("Database initialized successfully")

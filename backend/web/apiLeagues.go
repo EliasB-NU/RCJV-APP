@@ -46,7 +46,7 @@ func (a *API) updateLeagues(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&league); err != nil {
 		log.Printf("Error updating leagues: %v\n", err)
-		return c.Status(fiber.StatusInternalServerError).JSON("Error parsing data")
+		return c.Status(fiber.StatusBadRequest).JSON("Error parsing data")
 	}
 
 	err = a.PSQL.Model(&league).Save(league).Error
