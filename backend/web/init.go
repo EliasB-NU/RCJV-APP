@@ -90,9 +90,8 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	api.Delete("/logout", a.logout)                  // <- Token, deletes session
 	api.Post("/checkLogin", a.checkIfUserIsLoggedIn) // -> Bool&Perms, checks if the session is valid and returns the users permissions
 	// Leagues
-	api.Get("/leagues", a.getLeagues)                             // -> Returns Leagues Body
-	api.Post("/leagues/activate/:league", a.activateLeague)       // [Auth] <- League to activate
-	api.Delete("/leagues/deactivate/:league", a.deactivateLeague) // [Auth] <- League to deactivate
+	api.Get("/leagues", a.getLeagues)             // -> Returns Leagues Body
+	api.Patch("/leagues/update", a.updateLeagues) // [Auth] <- Sends the struct with all leagues and updates accordingly
 
 	// WebSites
 	rcjvApp.Static("/", "adminsite/dist/")

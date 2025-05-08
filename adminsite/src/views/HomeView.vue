@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import HeaderComponent from '@/components/HeaderComponent.vue'
+import LeaguesComponent from '@/components/LeaguesComponent.vue'
+
 
 </script>
 
 <template>
-  <h1>Admin Site</h1>
+  <HeaderComponent />
+  <LeaguesComponent />
 </template>
 
 <style scoped>

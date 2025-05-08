@@ -113,21 +113,26 @@ func InitPSQLDatabase(db *gorm.DB) error {
 	}
 
 	// Create initial league entry
-	var leagues = Leagues{
-		RescueLineEntry:        false,
-		RescueLine:             false,
-		RescueMazeEntry:        false,
-		RescueMaze:             false,
-		SoccerEntry:            false,
-		SoccerLightWeightEntry: false,
-		SoccerLightWeight:      false,
-		SoccerOpen:             false,
-		OnStageEntry:           false,
-		OnStage:                false,
-	}
-	err = db.Create(&leagues).Error
-	if err != nil {
-		return errors.New("failed to create leagues: " + err.Error())
+	// Check if league entry already exists
+	result = db.Find(&Leagues{})
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		// Create initial league
+		var leagues = Leagues{
+			RescueLineEntry:        false,
+			RescueLine:             false,
+			RescueMazeEntry:        false,
+			RescueMaze:             false,
+			SoccerEntry:            false,
+			SoccerLightWeightEntry: false,
+			SoccerLightWeight:      false,
+			SoccerOpen:             false,
+			OnStageEntry:           false,
+			OnStage:                false,
+		}
+		err = db.Create(&leagues).Error
+		if err != nil {
+			return errors.New("failed to create leagues: " + err.Error())
+		}
 	}
 
 	log.Println("Database initialized successfully")
