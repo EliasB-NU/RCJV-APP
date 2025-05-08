@@ -23,7 +23,8 @@ type API struct {
 
 func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.MST) {
 	var (
-		addrRCJVApp = "0.0.0.0:3006"
+		addrRCJVApp      = "0.0.0.0:3006"
+		addrRCJVGameSite = "0.0.0.0:3007"
 
 		err error
 
@@ -31,6 +32,11 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 		rcjvApp = fiber.New(fiber.Config{
 			ServerHeader: "rcjv-app:fiber",
 			AppName:      "rcjv-app",
+		})
+
+		rcjvGameSite = fiber.New(fiber.Config{
+			ServerHeader: "rcjv-game:fiber",
+			AppName:      "rcjv-game",
 		})
 
 		// Cors
@@ -61,10 +67,14 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 		})
 	)
 	// Internal tools
+	// RCJV App
 	rcjvApp.Use(c)                                          // Cors Middleware
 	rcjvApp.Use(healthcheck.New(healthcheck.ConfigDefault)) // Healthcheck Middleware
 	rcjvApp.Use("/monitor", mon)                            // Monitor
 	rcjvApp.Get("/healthcheck", getHealthcheck)             // Healthcheck
+	// RCJV game site
+	rcjvGameSite.Use(c)
+	rcjvGameSite.Use(healthcheck.New(healthcheck.ConfigDefault))
 
 	// API
 	api := fiber.New()
@@ -79,10 +89,22 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	api.Post("/login", a.login)                      // <- Email&Password || -> returns new session token
 	api.Delete("/logout", a.logout)                  // <- Token, deletes session
 	api.Post("/checkLogin", a.checkIfUserIsLoggedIn) // -> Bool&Perms, checks if the session is valid and returns the users permissions
+	// Leagues
+	api.Get("/leagues", a.getLeagues)                             // -> Returns Leagues Body
+	api.Post("/leagues/activate/:league", a.activateLeague)       // [Auth] <- League to activate
+	api.Delete("/leagues/deactivate/:league", a.deactivateLeague) // [Auth] <- League to deactivate
 
 	// WebSites
-	rcjvApp.Static("/admin", "adminsite/dist/")
-	rcjvApp.Static("/", "webview/dist/")
+	rcjvApp.Static("/", "adminsite/dist/")
+	rcjvGameSite.Static("/", "webview/dist/")
+
+	// Start WebView Server
+	go func() {
+		err = rcjvGameSite.Listen(addrRCJVGameSite)
+		if err != nil {
+			log.Fatal("Error starting server: ", err)
+		}
+	}()
 
 	mst.ElapsedTime()
 	// Start server

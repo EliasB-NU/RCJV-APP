@@ -28,16 +28,25 @@ type BrowserToken struct {
 	User     User
 }
 
-type Institution struct {
+type Leagues struct {
 	gorm.Model
 	ID uint64 `gorm:"primaryKey"`
 
-	Name string
+	RescueLineEntry bool `json:"rescueLineEntry"`
+	RescueLine      bool `json:"rescueLine"`
+	RescueMazeEntry bool `json:"rescueMazeEntry"`
+	RescueMaze      bool `json:"rescueMaze"`
 
-	Teams []Team
+	SoccerEntry            bool `json:"soccerEntry"`
+	SoccerLightWeightEntry bool `json:"soccerLightWeightEntry"`
+	SoccerLightWeight      bool `json:"soccerLightWeight"`
+	SoccerOpen             bool `json:"soccerOpen"`
+
+	OnStageEntry bool `json:"onStageEntry"`
+	OnStage      bool `json:"onStage"`
 }
 
-type League struct {
+type Institution struct {
 	gorm.Model
 	ID uint64 `gorm:"primaryKey"`
 
@@ -50,13 +59,11 @@ type Team struct {
 	gorm.Model
 	ID uint64 `gorm:"primaryKey"`
 
-	Name string
+	Name   string
+	League string
 
 	InstitutionID uint64 `gorm:"index"`
 	Institution   Institution
-
-	LeagueID uint64 `gorm:"index"`
-	League   League
 }
 
 // InitPSQLDatabase Creates all the necessary tables for the app to work
@@ -73,14 +80,14 @@ func InitPSQLDatabase(db *gorm.DB) error {
 		return errors.New("failed to auto migrate browser token table: " + err.Error())
 	}
 
+	err = db.AutoMigrate(&Leagues{})
+	if err != nil {
+		return errors.New("failed to auto migrate leagues table: " + err.Error())
+	}
+
 	err = db.AutoMigrate(&Institution{})
 	if err != nil {
 		return errors.New("failed to auto migrate institution table: " + err.Error())
-	}
-
-	err = db.AutoMigrate(&League{})
-	if err != nil {
-		return errors.New("failed to auto migrate league table: " + err.Error())
 	}
 
 	err = db.AutoMigrate(&Team{})
@@ -103,6 +110,24 @@ func InitPSQLDatabase(db *gorm.DB) error {
 		return errors.New("failed to check for initial admin user: " + result.Error.Error())
 	} else {
 		log.Println("Initial admin user already exists")
+	}
+
+	// Create initial league entry
+	var leagues = Leagues{
+		RescueLineEntry:        false,
+		RescueLine:             false,
+		RescueMazeEntry:        false,
+		RescueMaze:             false,
+		SoccerEntry:            false,
+		SoccerLightWeightEntry: false,
+		SoccerLightWeight:      false,
+		SoccerOpen:             false,
+		OnStageEntry:           false,
+		OnStage:                false,
+	}
+	err = db.Create(&leagues).Error
+	if err != nil {
+		return errors.New("failed to create leagues: " + err.Error())
 	}
 
 	log.Println("Database initialized successfully")
