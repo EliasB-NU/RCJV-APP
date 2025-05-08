@@ -42,6 +42,5 @@ func CheckAuth(headers map[string][]string, db *gorm.DB) bool {
 		return false
 	}
 
-	log.Println("Gonna return true")
 	return true
 }

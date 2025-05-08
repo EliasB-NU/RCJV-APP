@@ -101,6 +101,16 @@ onMounted(fetchLeagues)
              <label for="soccerOpen">Soccer Open:</label>
              <input v-model="leagues.soccerOpen" type="checkbox" id="soccerOpen" />
            </div>
+
+           <div class="flex justify-between items-center">
+             <label for="onStageEntry">OnStage Entry:</label>
+             <input v-model="leagues.onStageEntry" type="checkbox" id="onStageEntry" />
+           </div>
+
+           <div class="flex justify-between items-center">
+             <label for="onStage">OnStage:</label>
+             <input v-model="leagues.onStage" type="checkbox" id="onStage" />
+           </div>
          </div>
 
          <div class="p-3 flex space-x-2 mt-4 justify-end">
