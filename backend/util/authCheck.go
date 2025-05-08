@@ -23,7 +23,7 @@ func CheckAuth(headers map[string][]string, db *gorm.DB) bool {
 
 	// Check for an matching entry in the database
 	var key []database.BrowserToken
-	result := db.Where("key = ?", token).Find(&key)
+	result := db.Where("token = ?", token).Find(&key)
 	if result.Error != nil {
 		log.Printf("Error getting token: %v\n", result.Error)
 		return false
@@ -31,15 +31,17 @@ func CheckAuth(headers map[string][]string, db *gorm.DB) bool {
 
 	if len(key) > 1 {
 		log.Println("More than one token found")
+		go func() {
+			for _, v := range key {
+				err := db.Delete(v).Error
+				if err != nil {
+					log.Printf("Error deleting token: %v\n", err)
+				}
+			}
+		}()
 		return false
 	}
 
-	for _, v := range key {
-		err := db.Delete(v).Error
-		if err != nil {
-			log.Printf("Error deleting token: %v\n", err)
-		}
-	}
-
+	log.Println("Gonna return true")
 	return true
 }

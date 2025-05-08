@@ -89,6 +89,11 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	api.Post("/login", a.login)                      // <- Email&Password || -> returns new session token
 	api.Delete("/logout", a.logout)                  // <- Token, deletes session
 	api.Post("/checkLogin", a.checkIfUserIsLoggedIn) // -> Bool&Perms, checks if the session is valid and returns the users permissions
+	// Admin API - Users
+	api.Get("/users", a.getUsers)                 // [Auth] -> Returns all users
+	api.Post("/users/create", a.createUser)       // [Auth] <- Creates a new user
+	api.Patch("/users/update/:id", a.updateUser)  // [Auth] <- Updates a user
+	api.Delete("/users/delete/:id", a.deleteUser) // [Auth] <- Deletes a user based on id
 	// Leagues
 	api.Get("/leagues", a.getLeagues)             // -> Returns Leagues Body
 	api.Patch("/leagues/update", a.updateLeagues) // [Auth] <- Sends the struct with all leagues and updates accordingly

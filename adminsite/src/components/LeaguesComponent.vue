@@ -55,7 +55,7 @@ onMounted(fetchLeagues)
 </script>
 
 <template>
- <div class="fixed inset-0 bg-opacity-50 flex items-center justify-center">
+ <div class="inset-0 bg-opacity-50 flex items-center justify-center">
    <div class="bg-white p-6 rounded-2xl shadow-lg overflow-y-auto">
      <h3 class="text-lg font-semibold mb-4">Leagues:</h3>
 
