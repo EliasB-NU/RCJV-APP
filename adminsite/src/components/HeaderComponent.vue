@@ -7,7 +7,7 @@ import { ref } from 'vue'
 const mobileMenuOpen = ref<boolean>(false)
 
 const toggleMobileMenu = () => {
-  mobileMenuOpen.value = !mobileMenuOpen.value;
+  mobileMenuOpen.value = !mobileMenuOpen.value
 }
 
 const logout = async () => {
@@ -15,18 +15,18 @@ const logout = async () => {
     await axios
       .delete('/api/logout', {
         data: {
-          token: Cookies.get("token"),
-          deviceId: Cookies.get("deviceId"),
+          token: Cookies.get('token'),
+          deviceId: Cookies.get('deviceId')
         }
       })
       .then(() => {
-        Cookies.remove("token")
-        router.push({ name: "login" })
-      });
+        Cookies.remove('token')
+        router.push({ name: 'login' })
+      })
   } catch (error) {
-    console.error("Logout failed:", error);
+    console.error('Logout failed:', error)
   }
-};
+}
 </script>
 
 <template>
@@ -40,7 +40,7 @@ const logout = async () => {
       <!-- Navigation (Desktop) -->
       <nav class="hidden md:flex space-x-6">
         <router-link to="/" class="hover:text-gray-300">Home</router-link>
-        <router-link to="/teams" class="hover:text-gray-300" >Teams</router-link>
+        <router-link to="/teams" class="hover:text-gray-300">Teams & Institutions</router-link>
       </nav>
 
       <!-- Logout Button -->
@@ -55,9 +55,10 @@ const logout = async () => {
     </div>
 
     <!-- Mobile Navigation -->
-    <div v-if="mobileMenuOpen" class="md:hidden bg-gray-800 text-white px-4 py-6 flex flex-col space-y-4 text-lg">
-      <router-link to="/" class="hover:text-gray-300" >Home</router-link>
-      <router-link to="/teams" class="hover:text-gray-300" >Teams</router-link>
+    <div v-if="mobileMenuOpen"
+         class="md:hidden bg-gray-800 text-white px-4 py-6 flex flex-col space-y-4 text-lg">
+      <router-link to="/" class="hover:text-gray-300">Home</router-link>
+      <router-link to="/teams" class="hover:text-gray-300">Teams & Institutions</router-link>
     </div>
   </header>
 </template>

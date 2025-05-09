@@ -1,25 +1,28 @@
 # API Specification
 
-| Endpoint              | Payload                     | Auth  | Return                   | Description                                 |
-|-----------------------|-----------------------------|-------|--------------------------|---------------------------------------------|
-| /api/config           |                             | true  | current config           | Getting the current config for the frontend |
-| /api/config/update    | Updated Config              | true  |                          | Updating the current config                 |
-| /api/enabled          |                             | false | if enabled: 200 else 423 | Returns if the app is enabled               |
-| /api/name             |                             | false | name of event            | Get the name of the current Event           |
-| /api/login            | Email & Password & DeviceId | false | BrowserToken             | Auth Handler for the admin login            |
-| /api/logout           |                             | false | 200                      | deletes the browser Token from the database |
-| /api/checkLogin       |                             | false | 200                      | Returns 200, if the code is still valid     |
-| /api/users            |                             | true  | UsersBody                | Returns all users                           |
-| /api/users/create     | UsersBody with Password     | true  |                          | Create a new user                           |
-| /api/users/update/:id | UsersBody with Password     | true  |                          | Update an existing owner                    |
-| /api/users/delete/:id |                             | true  | 200                      | Delete a user (can be restored)             |
-| /api/leagues          |                             | false | leaguesBody              | Returns a list of active leagues            |
-| /api/leagues/update   | leaguesBody                 | yes   |                          | To update all leagues                       |
-| /api/teams            |                             | false | teamsBody                | Get all teams                               |
-| /api/teams/create     | teamsBody                   | true  |                          | Create a new team                           |
-| /api/teams/update/:id | teamsBody                   | true  |                          | Update an existing team                     |
-| /api/teams/delete/:id | id                          | true  |                          | Delete a team (can be restored)             |
-| /api/institutions     |                             | false | institutionsBody         | Get all institutions                        |
+| Endpoint                    | Payload                     | Auth  | Return                   | Description                                              |
+|-----------------------------|-----------------------------|-------|--------------------------|----------------------------------------------------------|
+| /api/config                 |                             | true  | current config           | Getting the current config for the frontend              |
+| /api/config/update          | Updated Config              | true  |                          | Updating the current config                              |
+| /api/enabled                |                             | false | if enabled: 200 else 423 | Returns if the app is enabled                            |
+| /api/name                   |                             | false | name of event            | Get the name of the current Event                        |
+| /api/login                  | Email & Password & DeviceId | false | BrowserToken             | Auth Handler for the admin login                         |
+| /api/logout                 |                             | false | 200                      | deletes the browser Token from the database              |
+| /api/checkLogin             |                             | false | 200                      | Returns 200, if the code is still valid                  |
+| /api/users                  |                             | true  | UsersBody                | Returns all users                                        |
+| /api/users/create           | UsersBody with Password     | true  |                          | Create a new user                                        |
+| /api/users/update/:id       | UsersBody with Password     | true  |                          | Update an existing owner                                 |
+| /api/users/delete/:id       |                             | true  | 200                      | Delete a user (can be restored)                          |
+| /api/leagues                |                             | false | leaguesBody              | Returns a list of active leagues                         |
+| /api/leagues/update         | leaguesBody                 | yes   |                          | To update all leagues                                    |
+| /api/teams                  |                             | false | teamsBody                | Get all teams                                            |
+| /api/teams/create           | teamsBody                   | true  |                          | Create a new team                                        |
+| /api/teams/update/:id       | teamsBody                   | true  |                          | Update an existing team                                  |
+| /api/teams/delete/:id       | id                          | true  |                          | Delete a team (can be restored)                          |
+| /api/institutions           |                             | false | institutionsBody         | Get all institutions                                     |
+| /api/institution/create     | institutionBody             | true  |                          | Create a new institution                                 |
+| /api/institution/update/:id | institutionBody             | true  |                          | Update a existing institution                            |
+| /api/institution/delete/:id | id                          | true  |                          | Delete an institution (with all teams) (can be restored) |
 
 "Can be restored": [Gorm](https://gorm.io/) (the database interface used by me) sets the `deleted_at` column to the current time on
 a delete action, so you can go into the database and set it to null again to restore the lost data.

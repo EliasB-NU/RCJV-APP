@@ -58,7 +58,7 @@ type Institution struct {
 	gorm.Model
 	ID uint64 `gorm:"primaryKey"`
 
-	Name string
+	Name string `json:"name"`
 
 	Teams []Team
 }
