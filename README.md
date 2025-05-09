@@ -17,6 +17,27 @@ is an example file in the repo.
 # Questions
 Feel free to open an issue, if you have a question.
 
+# Devs
+ - Backend @EliasB-NU
+ - AdminSite @EliasB-NU
+ - WebView @EliasB-NU
+ - App @strassbcarla
+
+# Architecture
+
+ - Backend [golang](https://go.dev)
+   - [Fiber](https://gofiber.io/)
+   - [Gorm](https://gorm.io)
+   - [goValkey](https://github.com/valkey-io/valkey-go)
+ - Databases
+   - [Postgresql 17](https://www.postgresql.org/)
+   - [Valkey 8](https://valkey.io/)
+ - Frontend [VueJS 3](https://vuejs.org/)
+   - [VueRouter](https://router.vuejs.org/)
+   - [TailwindCSS](https://tailwindcss.com/)
+ - App [Flutter](https://flutter.dev/)
+   - [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging)
+
 # ToDo
  - [ ] Admin View
  - [ ] Public View

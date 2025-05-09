@@ -102,7 +102,13 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	// Leagues
 	api.Get("/leagues", a.getLeagues)             // -> Returns Leagues Body
 	api.Patch("/leagues/update", a.updateLeagues) // [Auth] <- Sends the struct with all leagues and updates accordingly
-
+	// Teams
+	api.Get("/teams", a.getTeams)                 // -> Returns all teams with their name, league and institution
+	api.Post("/teams/create", a.createTeam)       // [Auth] <- Name, League and Institution, creates a new team
+	api.Post("/teams/update/:id", a.updateTeam)   // [Auth] <- Name, League and Institution, updates a team
+	api.Delete("/teams/delete/:id", a.deleteTeam) // [Auth] <- team id, deletes the team (can be restored)
+	// Institutions
+	api.Get("/institutions", a.getInstitutions) // -> Returns all institutions with their name and amount of teams
 	// WebSites
 	rcjvApp.Static("/", "adminsite/dist/")
 	rcjvGameSite.Static("/", "webview/dist/")

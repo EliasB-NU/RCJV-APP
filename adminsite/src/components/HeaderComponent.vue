@@ -34,13 +34,13 @@ const logout = async () => {
     <div class="max-w-7xl mx-auto px-6 flex justify-between items-center h-16">
       <!-- Logo -->
       <router-link to="/" class="text-xl font-semibold">
-        RCJV APP V1
+        RCJ APP V1
       </router-link>
 
       <!-- Navigation (Desktop) -->
       <nav class="hidden md:flex space-x-6">
-        <router-link to="/" class="hover:text-gray-300" >Home</router-link>
-
+        <router-link to="/" class="hover:text-gray-300">Home</router-link>
+        <router-link to="/teams" class="hover:text-gray-300" >Teams</router-link>
       </nav>
 
       <!-- Logout Button -->
@@ -57,6 +57,7 @@ const logout = async () => {
     <!-- Mobile Navigation -->
     <div v-if="mobileMenuOpen" class="md:hidden bg-gray-800 text-white px-4 py-6 flex flex-col space-y-4 text-lg">
       <router-link to="/" class="hover:text-gray-300" >Home</router-link>
+      <router-link to="/teams" class="hover:text-gray-300" >Teams</router-link>
     </div>
   </header>
 </template>

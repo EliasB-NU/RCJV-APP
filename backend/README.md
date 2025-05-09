@@ -15,7 +15,14 @@
 | /api/users/delete/:id |                             | true  | 200                      | Delete a user (can be restored)             |
 | /api/leagues          |                             | false | leaguesBody              | Returns a list of active leagues            |
 | /api/leagues/update   | leaguesBody                 | yes   |                          | To update all leagues                       |
-|                       |                             |       |                          |                                             |
+| /api/teams            |                             | false | teamsBody                | Get all teams                               |
+| /api/teams/create     | teamsBody                   | true  |                          | Create a new team                           |
+| /api/teams/update/:id | teamsBody                   | true  |                          | Update an existing team                     |
+| /api/teams/delete/:id | id                          | true  |                          | Delete a team (can be restored)             |
+| /api/institutions     |                             | false | institutionsBody         | Get all institutions                        |
+
+"Can be restored": [Gorm](https://gorm.io/) (the database interface used by me) sets the `deleted_at` column to the current time on
+a delete action, so you can go into the database and set it to null again to restore the lost data.
 
 # JSON Bodies
 These are the bodies returned by the backend
@@ -48,3 +55,30 @@ These are the bodies returned by the backend
   "password": "string | only on create & edit"
 }
 ````
+
+### Teams Body
+
+```json
+{
+  "lastUpdate": "time.Time",
+  "data": {
+    "id": "number",
+    "name": "string",
+    "league": "league | same as on the leagues endpoint",
+    "institution": "string"
+  }
+}
+```
+
+### Institutions Body
+
+```json
+{
+  "lastUpdate": "time.Time",
+  "data": {
+    "id": "number",
+    "name": "string",
+    "numberTeams": "number"
+  }
+}
+```
