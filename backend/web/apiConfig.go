@@ -51,7 +51,7 @@ func (a *API) updateConfig(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON("Error parsing config")
 	}
 
-	err = a.PSQL.Model(&config).Updates(config).Error
+	err = a.PSQL.Model(&config).Save(config).Error
 	if err != nil {
 		log.Printf("Error updating config: %v\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON("Error updating config")
