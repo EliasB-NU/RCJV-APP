@@ -40,6 +40,8 @@ RUN apk --no-cache add ca-certificates wget
 
 WORKDIR /app
 
+COPY ods/ ./ods
+
 COPY --from=builder-backend /app/main .
 
 COPY --from=builder-adminsite /app/dist ./adminsite/dist

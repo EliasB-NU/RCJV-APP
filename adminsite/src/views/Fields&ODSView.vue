@@ -148,7 +148,6 @@ const newODS = async () => {
       .get(`/api/matches/generate/${selectedOption.value}`, {
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json',
           'Authorization': 'Bearer ' + Cookies.get('token'),
         },
         responseType: 'blob'
