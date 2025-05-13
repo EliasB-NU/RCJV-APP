@@ -137,8 +137,11 @@ func (a *API) getMatchesTeam(c *fiber.Ctx) error {
 
 	// Load the team and preload the matches and Institution
 	var team = database.Team{}
-	err = a.PSQL.Preload("Matches").Preload("Institution").First(&team, teamID).Error
+	err = a.PSQL.Preload("Match").Preload("Institution").First(&team, teamID).Error
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Status(fiber.StatusNotFound).JSON("Invalid or outdated teamID")
+		}
 		log.Printf("Error fetching team: %v\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching team")
 	}
@@ -190,7 +193,7 @@ func (a *API) getMatchesInstitution(c *fiber.Ctx) error {
 
 	// Get all the matches and preload the team and institution
 	var matches []database.Match
-	err = a.PSQL.Preload("Teams").Preload("Institution").Where("institution_id = ?", institutionID).Find(&matches).Error
+	err = a.PSQL.Preload("Team").Preload("Institution").Where("institution_id = ?", institutionID).Find(&matches).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return c.Status(fiber.StatusNotFound).JSON("Invalid institutionID")
@@ -247,7 +250,7 @@ func (a *API) getMatchesField(c *fiber.Ctx) error {
 
 	// Get all the matches and preload the team and institution
 	var matches []database.Match
-	err = a.PSQL.Preload("Teams").Preload("Institution").Where("league = ? AND field = ?", league, field).Find(&matches).Error
+	err = a.PSQL.Preload("Team").Preload("Institution").Where("league = ? AND field = ?", league, field).Find(&matches).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return c.Status(fiber.StatusNotFound).JSON("Invalid institutionID")

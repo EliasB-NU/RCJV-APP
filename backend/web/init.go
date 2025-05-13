@@ -117,15 +117,15 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	api.Post("/fields/update/:id", a.updateField)   // [Auth] <- Name&League&Id, updates an existing field
 	api.Delete("/fields/delete/:id", a.deleteField) // [Auth] <- Id, deletes an existing field
 	// Matches
-	api.Get("/matches", a.getAllMatches)                        // -> Returns all games
-	api.Get("/matches/:league", a.getMatchesLeague)             // -> Returns all games by league
-	api.Get("/matches/:teamID", a.getMatchesTeam)               // -> Returns all games by team
-	api.Get("/matches/:institutionID", a.getMatchesInstitution) // -> Returns all games by institution
-	api.Get("/matches/:league/:field", a.getMatchesField)       // -> Returns all games by field (Due to sometimes similar naming conventions in different leagues, you also have to define the league
-	api.Post("/matches/upload/:league", a.uploadMatches)        // [Auth] <- Uploads the ods with all the matches
-	api.Get("/matches/generate/:league", a.generateODS)         // [Auth] -> Generates a new ods file with the teams of the league
-	api.Post("/matches/update/:id", a.updateMatch)              // [Auth] <- Update a match based on its id
-	api.Delete("/matches/delete/:id", a.deleteMatch)            // [Auth] <- Delete a match based on its idea
+	api.Get("/matches", a.getAllMatches)                                    // -> Returns all games
+	api.Get("/matches/league/:league", a.getMatchesLeague)                  // -> Returns all games by league
+	api.Get("/matches/team/:teamID", a.getMatchesTeam)                      // -> Returns all games by team
+	api.Get("/matches/institution/:institutionID", a.getMatchesInstitution) // -> Returns all games by institution
+	api.Get("/matches/field/:league/:field", a.getMatchesField)             // -> Returns all games by field (Due to sometimes similar naming conventions in different leagues, you also have to define the league
+	api.Post("/matches/upload/:league", a.uploadMatches)                    // [Auth] <- Uploads the ods with all the matches
+	api.Get("/matches/generate/:league", a.generateODS)                     // [Auth] -> Generates a new ods file with the teams of the league
+	api.Post("/matches/update/:id", a.updateMatch)                          // [Auth] <- Update a match based on its id
+	api.Delete("/matches/delete/:id", a.deleteMatch)                        // [Auth] <- Delete a match based on its idea
 
 	// WebSites
 	rcjvApp.Static("/", "adminsite/dist/")
