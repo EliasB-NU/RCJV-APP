@@ -41,6 +41,7 @@ const logout = async () => {
       <nav class="hidden md:flex space-x-6">
         <router-link to="/" class="hover:text-gray-300">Home</router-link>
         <router-link to="/teams" class="hover:text-gray-300">Teams & Institutions</router-link>
+        <router-link to="/fields" class="hover:text-gray-300">Fields & ODS</router-link>
       </nav>
 
       <!-- Logout Button -->
@@ -59,6 +60,7 @@ const logout = async () => {
          class="md:hidden bg-gray-800 text-white px-4 py-6 flex flex-col space-y-4 text-lg">
       <router-link to="/" class="hover:text-gray-300">Home</router-link>
       <router-link to="/teams" class="hover:text-gray-300">Teams & Institutions</router-link>
+      <router-link to="/fields" class="hover:text-gray-300">Fields & ODS</router-link>
     </div>
   </header>
 </template>

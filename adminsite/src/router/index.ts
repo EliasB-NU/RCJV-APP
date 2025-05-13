@@ -15,8 +15,13 @@ const router = createRouter({
     },
     {
       path: '/teams',
-      name: 'teams',
+      name: 'Teams & Institutions',
       component: () => import('@/views/Teams&InstitutionsView.vue'),
+    },
+    {
+      path: '/fields',
+      name: 'Fields & ODS',
+      component: () => import('@/views/Fields&ODSView.vue')
     }
   ],
 })

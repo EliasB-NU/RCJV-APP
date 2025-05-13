@@ -54,7 +54,6 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 			AllowMethods: strings.Join([]string{
 				fiber.MethodGet,
 				fiber.MethodPost,
-				fiber.MethodPatch,
 				fiber.MethodDelete,
 			}, ","),
 
@@ -112,13 +111,22 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	api.Post("/institutions/create", a.createInstitution)       // [Auth] <- Name, creates an institution
 	api.Post("/institutions/update/:id", a.updateInstitution)   // [Auth] <- Name, updates an existing institution
 	api.Delete("/institutions/delete/:id", a.deleteInstitution) // [Auth] <- Deletes an existing institution
-	// Games
+	// Fields
+	api.Get("/fields", a.getFields)                 // [Auth] -> Returns all fields
+	api.Post("/fields/create", a.createField)       // [Auth] <- Name&League, creates a new field
+	api.Post("/fields/update/:id", a.updateField)   // [Auth] <- Name&League&Id, updates an existing field
+	api.Delete("/fields/delete/:id", a.deleteField) // [Auth] <- Id, deletes an existing field
+	// Matches
 	api.Get("/matches", a.getAllMatches)                        // -> Returns all games
 	api.Get("/matches/:league", a.getMatchesLeague)             // -> Returns all games by league
 	api.Get("/matches/:teamID", a.getMatchesTeam)               // -> Returns all games by team
 	api.Get("/matches/:institutionID", a.getMatchesInstitution) // -> Returns all games by institution
 	api.Get("/matches/:league/:field", a.getMatchesField)       // -> Returns all games by field (Due to sometimes similar naming conventions in different leagues, you also have to define the league
-	// Upload games
+	api.Post("/matches/upload/:league", a.uploadMatches)        // [Auth] <- Uploads the ods with all the matches
+	api.Get("/matches/generate/:league", a.generateODS)         // [Auth] -> Generates a new ods file with the teams of the league
+	api.Post("/matches/update/:id", a.updateMatch)              // [Auth] <- Update a match based on its id
+	api.Delete("/matches/delete/:id", a.deleteMatch)            // [Auth] <- Delete a match based on its idea
+
 	// WebSites
 	rcjvApp.Static("/", "adminsite/dist/")
 	rcjvGameSite.Static("/", "webview/dist/")

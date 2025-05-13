@@ -55,11 +55,11 @@ func GetConfig() *Config {
 		config.Database.PSQL.Password = os.Getenv("PSQL_PASSWORD")
 		config.Database.PSQL.DBName = os.Getenv("PSQL_DBNAME")
 		config.Database.PSQL.TimeZone = os.Getenv("PSQL_TIMEZONE")
-		config.Database.Valkey.Host = os.Getenv("REDIS_HOST")
-		config.Database.Valkey.Port, _ = strconv.Atoi(os.Getenv("REDIS_PORT"))
-		config.Database.Valkey.DB, _ = strconv.Atoi(os.Getenv("REDIS_DB"))
-		config.Database.Valkey.User = os.Getenv("REDIS_USER")
-		config.Database.Valkey.Password = os.Getenv("REDIS_PASSWORD")
+		config.Database.Valkey.Host = os.Getenv("VALKEY_HOST")
+		config.Database.Valkey.Port, _ = strconv.Atoi(os.Getenv("VALKEY_PORT"))
+		config.Database.Valkey.DB, _ = strconv.Atoi(os.Getenv("VALKEY_DB"))
+		config.Database.Valkey.User = os.Getenv("VALKEY_USER")
+		config.Database.Valkey.Password = os.Getenv("VALKEY_PASSWORD")
 	} else {
 		panic("Invalid environment")
 		return nil
