@@ -5,6 +5,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"log"
+	"time"
 )
 
 type User struct {
@@ -60,6 +61,8 @@ type Institution struct {
 
 	Name string `json:"name"`
 
+	Matches []Match
+
 	Teams []Team
 }
 
@@ -70,8 +73,36 @@ type Team struct {
 	Name   string
 	League string
 
+	Matches []Match
+
 	InstitutionID uint64 `gorm:"index"`
 	Institution   Institution
+}
+
+type Field struct {
+	gorm.Model
+	ID uint64 `gorm:"primaryKey" json:"id"`
+
+	Name   string `json:"name"`
+	League string `json:"league"`
+}
+
+type Match struct {
+	gorm.Model
+	ID uint64 `gorm:"primaryKey" json:"id"`
+
+	Name      string
+	StartTime time.Time
+	Duration  time.Duration
+	Field     string
+
+	League string
+
+	Institution   Institution
+	InstitutionID uint64 `gorm:"index"`
+
+	Team   Team
+	TeamID uint64 `gorm:"index"`
 }
 
 // InitPSQLDatabase Creates all the necessary tables for the app to work
@@ -106,6 +137,17 @@ func InitPSQLDatabase(db *gorm.DB) error {
 	err = db.AutoMigrate(&Team{})
 	if err != nil {
 		return errors.New("failed to auto migrate team table: " + err.Error())
+	}
+
+	err = db.AutoMigrate(&Field{})
+	if err != nil {
+		return errors.New("failed to auto migrate field table: " + err.Error())
+	}
+
+	// I am lazy, so all game tables are initiated at once here
+	err = db.AutoMigrate(&Match{})
+	if err != nil {
+		return errors.New("failed to auto migrate matches tables: " + err.Error())
 	}
 
 	// Create initial admin user, if not exists (email: admin@example.com, username: admin, password: admin)

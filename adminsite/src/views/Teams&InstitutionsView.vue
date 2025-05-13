@@ -168,7 +168,7 @@ onMounted(async () => {
           <button
             @click="showCreateTeam = true"
             class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
-            Create User
+            Create Team
           </button>
         </div>
 
@@ -224,7 +224,7 @@ onMounted(async () => {
       <div class="bg-white p-6 rounded-2xl shadow-lg overflow-y-auto">
         <div class="mb-4">
           <h2 class="text-2xl font-semibold mb-4">Institutions</h2>
-          <button @click="createInstitution" class="bg-gray-700 text-white px-4 py-2 rounded">
+          <button @click="createInstitution" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded">
             + Create Institution
           </button>
         </div>
@@ -238,7 +238,7 @@ onMounted(async () => {
           />
           <span class="text-gray-500">Teams: {{ institution.numberTeams }}</span>
           <button @click="updateInstitution(institution.id, index)"
-                  class="bg-gray-700 text-white px-2 py-1 rounded">
+                  class="bg-gray-800 hover:bg-gray-700 text-white px-2 py-1 rounded">
             Update
           </button>
           <button @click="deleteInstitution(institution.id)"

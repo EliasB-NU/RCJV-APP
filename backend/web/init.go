@@ -112,6 +112,13 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	api.Post("/institutions/create", a.createInstitution)       // [Auth] <- Name, creates an institution
 	api.Post("/institutions/update/:id", a.updateInstitution)   // [Auth] <- Name, updates an existing institution
 	api.Delete("/institutions/delete/:id", a.deleteInstitution) // [Auth] <- Deletes an existing institution
+	// Games
+	api.Get("/matches", a.getAllMatches)                        // -> Returns all games
+	api.Get("/matches/:league", a.getMatchesLeague)             // -> Returns all games by league
+	api.Get("/matches/:teamID", a.getMatchesTeam)               // -> Returns all games by team
+	api.Get("/matches/:institutionID", a.getMatchesInstitution) // -> Returns all games by institution
+	api.Get("/matches/:league/:field", a.getMatchesField)       // -> Returns all games by field (Due to sometimes similar naming conventions in different leagues, you also have to define the league
+	// Upload games
 	// WebSites
 	rcjvApp.Static("/", "adminsite/dist/")
 	rcjvGameSite.Static("/", "webview/dist/")

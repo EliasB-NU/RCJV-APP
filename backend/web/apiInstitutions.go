@@ -41,8 +41,8 @@ func (a *API) getInstitutions(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"lastUpdated": time.Now(),
-		"data":        data,
+		"lastRequested": time.Now(),
+		"data":          data,
 	})
 }
 
