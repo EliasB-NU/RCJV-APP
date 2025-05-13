@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"rcjv-app/backend/config"
 	"rcjv-app/backend/database"
 	"rcjv-app/backend/util"
@@ -16,6 +17,14 @@ func main() {
 	// RCJV APP V1
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.Println("Starting RCJV Backend ...")
+
+	// Check if dev or prod, create tmp dir if dev
+	if os.Args[1] == "dev" {
+		err := os.MkdirAll("./tmp", os.ModePerm)
+		if err != nil {
+			log.Fatalf("Error creating ./tmp directory: %v\n", err)
+		}
+	}
 
 	// Get config
 	var cfg = config.GetConfig()

@@ -38,7 +38,7 @@ const createField = async () => {
     await axios
       .post('/api/fields/create', {
         name: 'newField',
-        league: 'soccerEntry',
+        league: 'soccerEntry'
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -46,9 +46,9 @@ const createField = async () => {
           'Authorization': 'Bearer ' + Cookies.get('token')
         }
       })
-    .then(() => {
-      fetchFields()
-    })
+      .then(() => {
+        fetchFields()
+      })
   } catch (error) {
     popUp.value?.show('Error creating field.')
     console.log(error)
@@ -59,7 +59,7 @@ const updateField = async (fieldID: number, index: number) => {
   try {
     await axios
       .post(`/api/fields/update/${fieldID}`, {
-        ...fields.value[index],
+        ...fields.value[index]
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -88,13 +88,91 @@ const deleteField = async (id: number) => {
           'Authorization': 'Bearer ' + Cookies.get('token')
         }
       })
-    .then(() => {
-      popUp.value?.show('Successfully deleted field.')
-      fetchFields()
-    })
+      .then(() => {
+        popUp.value?.show('Successfully deleted field.')
+        fetchFields()
+      })
   } catch (error) {
     popUp.value?.show('Error deleting field.')
     console.log(error)
+  }
+}
+
+const selectedFile = ref<File | null>(null)
+const selectedOption = ref<string>('')
+
+// Handle file input change
+function handleFileChange(event: Event) {
+  const input = event.target as HTMLInputElement
+  if (input.files && input.files.length > 0) {
+    selectedFile.value = input.files[0]
+    console.log('File selected:', selectedFile.value.name)
+  }
+}
+
+// Handle file submission
+const uploadODS = async () => {
+  if (!selectedFile.value) {
+    alert('Please upload a file')
+    return
+  }
+  if (!selectedOption.value) {
+    alert('Please select a league')
+    return
+  }
+  try {
+    await axios
+      .post(`/api/matches/upload/${selectedOption.value}`, {
+        matches: selectedFile.value
+      }, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          'Authorization': 'Bearer ' + Cookies.get('token')
+        }
+      })
+  } catch (error) {
+    console.log(error)
+    popUp.value?.show("Error submitting new ODS file")
+  }
+}
+
+// Handle dropdown-related action
+const newODS = async () => {
+  if (!selectedOption.value) {
+    alert('Please select a league')
+    return
+  }
+  try {
+    await axios
+      .get(`/api/matches/generate/${selectedOption.value}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'Authorization': 'Bearer ' + Cookies.get('token'),
+        },
+        responseType: 'blob'
+      })
+    .then(res => {
+      popUp.value?.show('Successfully generated ods file.')
+
+      const blob = new Blob([res.data]);
+
+      // Just use your own name
+      const filename = `${selectedOption.value}_template.ods`
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.setAttribute('download', filename);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    })
+  } catch (error) {
+    console.log(error)
+    popUp.value?.show('Error generating new ods file.')
   }
 }
 
@@ -149,8 +227,50 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="bg-white p-6 rounded-2xl shadow-lg overflow-y-auto">
+    <!-- File Upload Section -->
+    <div class="p-4 border rounded shadow mb-4 max-w-md">
+      <h2 class="text-lg font-bold mb-2">Upload ODS</h2>
 
+      <input type="file" @change="handleFileChange" class="mb-2 text-blue-400 hover:underline" />
+
+      <button
+        @click="uploadODS"
+        class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded disabled:opacity-50"
+      >
+        Upload
+      </button>
+
+      <!-- Red Warning Box -->
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-4">
+        ⚠️ Warning: All previous matches will be deleted     <br>
+        ⚠️ Warning: Don't forget to select your league below
+      </div>
+
+      <!-- Sub-box with Select and Button -->
+      <div class="mt-4 p-3 border border-gray-300 rounded bg-gray-50">
+        <label class="block mb-1 font-semibold">Select Option</label>
+        <div class="flex items-center space-x-2">
+          <select v-model="selectedOption" class="border p-1 rounded flex-1">
+            <option value="soccerEntry">Soccer Entry</option>
+            <option value="soccerLightWeightEntry">Soccer LightWeight Entry</option>
+            <option value="soccerLightWeight">Soccer LightWeight int.</option>
+            <option value="soccerOpen">Soccer Open int.</option>
+            <option value="rescueLineEntry">Rescue Line Entry</option>
+            <option value="rescueLine">Rescue Line int.</option>
+            <option value="rescueMazeEntry">Rescue Maze Entry</option>
+            <option value="rescueMaze">Rescue Maze int.</option>
+            <option value="onStageEntry">Onstage Entry</option>
+            <option value="onStage">Onstage int.</option>
+          </select>
+
+          <button
+            @click="newODS"
+            class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1 rounded"
+          >
+            Generate new ODS
+          </button>
+        </div>
+      </div>
     </div>
     <PopUp ref="popUp" />
   </div>

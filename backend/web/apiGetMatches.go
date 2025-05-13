@@ -229,6 +229,9 @@ func (a *API) getMatchesInstitution(c *fiber.Ctx) error {
 }
 
 func (a *API) getMatchesField(c *fiber.Ctx) error {
+	if c.Params("league") == "generate" {
+		return c.Next()
+	}
 	var (
 		league string
 		field  string
