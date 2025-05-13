@@ -1,6 +1,18 @@
 services:
   web:
     image: "ghcr.io/eliasb-nu/rcjv-app:${GIT_COMMIT_HASH:-latest}"
+    environment:
+      - "PSQL_HOST=${PSQL_HOST}"
+      - "PSQL_PORT=${PSQL_PORT}"
+      - "PSQL_USER=${PSQL_USER}"
+      - "PSQL_PASSWORD=${PSQL_PASSWORD}"
+      - "PSQL_DBNAME=${PSQL_DBNAME}"
+      - "PSQL_TIMEZONE=${PSQL_TIMEZONE}"
+      - "VALKEY_HOST=${VALKEY_HOST}"
+      - "VALKEY_PORT=${VALKEY_PORt}"
+      - "VALKEY_DB=${VALKEY_DB}"
+      - "VALKEY_USER=${VALKEY_USER}"
+      - "VALKEY_PASSWORD=${VALKEY_PASSWORD}"
     networks:
       - traefik-nw
     restart: always
