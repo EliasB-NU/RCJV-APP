@@ -77,8 +77,9 @@ func (a *API) generateODS(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON("invalid league")
 	}
 
-	ods, err := data.GenerateODS(league, a.PSQL)
+	ods, err := data.GenerateXLSX(league, a.PSQL)
 	if err != nil {
+		log.Print(err)
 		return c.Status(fiber.StatusInternalServerError).JSON("Error generating ODS")
 	}
 
