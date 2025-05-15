@@ -15,11 +15,11 @@ type payload struct {
 	ID        uint64    `json:"id"`
 	UpdatedAt time.Time `json:"updated_at"`
 
-	League    string        `json:"league"`
-	Name      string        `json:"name"`
-	StartTime time.Time     `json:"startTime"`
-	Duration  time.Duration `json:"duration"`
-	Field     string        `json:"field"`
+	League    string    `json:"league"`
+	Name      string    `json:"name"`
+	StartTime time.Time `json:"startTime"`
+	Duration  int       `json:"duration"`
+	Field     string    `json:"field"`
 
 	InstitutionID   uint64 `json:"institutionID"`
 	InstitutionName string `json:"institutionName"`
@@ -54,7 +54,7 @@ func (a *API) getAllMatches(c *fiber.Ctx) error {
 			League:          v.League,
 			Name:            v.Name,
 			StartTime:       v.StartTime,
-			Duration:        v.Duration,
+			Duration:        int(v.Duration / time.Minute),
 			Field:           v.Field,
 			InstitutionID:   v.InstitutionID,
 			InstitutionName: v.Institution.Name,
@@ -101,7 +101,7 @@ func (a *API) getMatchesLeague(c *fiber.Ctx) error {
 			League:    v.League,
 			Name:      v.Name,
 			StartTime: v.StartTime,
-			Duration:  v.Duration,
+			Duration:  int(v.Duration / time.Minute),
 			Field:     v.Field,
 
 			InstitutionID:   v.InstitutionID,
@@ -157,7 +157,7 @@ func (a *API) getMatchesTeam(c *fiber.Ctx) error {
 			League:    m.League,
 			Name:      m.Name,
 			StartTime: m.StartTime,
-			Duration:  m.Duration,
+			Duration:  int(m.Duration / time.Minute),
 			Field:     m.Field,
 
 			InstitutionID:   team.InstitutionID,
@@ -212,7 +212,7 @@ func (a *API) getMatchesInstitution(c *fiber.Ctx) error {
 			League:    m.League,
 			Name:      m.Name,
 			StartTime: m.StartTime,
-			Duration:  m.Duration,
+			Duration:  int(m.Duration / time.Minute),
 			Field:     m.Field,
 
 			InstitutionID:   institutionID,
@@ -269,7 +269,7 @@ func (a *API) getMatchesField(c *fiber.Ctx) error {
 			League:    m.League,
 			Name:      m.Name,
 			StartTime: m.StartTime,
-			Duration:  m.Duration,
+			Duration:  int(m.Duration / time.Minute),
 			Field:     m.Field,
 
 			InstitutionID:   m.InstitutionID,

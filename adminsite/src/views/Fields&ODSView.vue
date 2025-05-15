@@ -158,7 +158,7 @@ const newODS = async () => {
       const blob = new Blob([res.data]);
 
       // Just use your own name
-      const filename = `${selectedOption.value}_template.ods`
+      const filename = `matches_template_${selectedOption.value}.xlsx`
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
