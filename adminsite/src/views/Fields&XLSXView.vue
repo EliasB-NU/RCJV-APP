@@ -111,7 +111,7 @@ function handleFileChange(event: Event) {
 }
 
 // Handle file submission
-const uploadODS = async () => {
+const uploadXLSX = async () => {
   if (!selectedFile.value) {
     alert('Please upload a file')
     return
@@ -133,12 +133,12 @@ const uploadODS = async () => {
       })
   } catch (error) {
     console.log(error)
-    popUp.value?.show("Error submitting new ODS file")
+    popUp.value?.show("Error submitting new XLSX file")
   }
 }
 
 // Handle dropdown-related action
-const newODS = async () => {
+const newXLSX = async () => {
   if (!selectedOption.value) {
     alert('Please select a league')
     return
@@ -153,7 +153,7 @@ const newODS = async () => {
         responseType: 'blob'
       })
     .then(res => {
-      popUp.value?.show('Successfully generated ods file.')
+      popUp.value?.show('Successfully generated XLSX file.')
 
       const blob = new Blob([res.data]);
 
@@ -171,7 +171,7 @@ const newODS = async () => {
     })
   } catch (error) {
     console.log(error)
-    popUp.value?.show('Error generating new ods file.')
+    popUp.value?.show('Error generating new XLSX file.')
   }
 }
 
@@ -228,12 +228,12 @@ onMounted(async () => {
     </div>
     <!-- File Upload Section -->
     <div class="p-4 border rounded shadow mb-4 max-w-md">
-      <h2 class="text-lg font-bold mb-2">Upload ODS</h2>
+      <h2 class="text-lg font-bold mb-2">Upload XLSX</h2>
 
       <input type="file" @change="handleFileChange" class="mb-2 text-blue-400 hover:underline" />
 
       <button
-        @click="uploadODS"
+        @click="uploadXLSX"
         class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded disabled:opacity-50"
       >
         Upload
@@ -263,10 +263,10 @@ onMounted(async () => {
           </select>
 
           <button
-            @click="newODS"
+            @click="newXLSX"
             class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1 rounded"
           >
-            Generate new ODS
+            Generate new XLSX
           </button>
         </div>
       </div>

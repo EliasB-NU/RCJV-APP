@@ -112,7 +112,7 @@ func (a *API) deleteMatch(c *fiber.Ctx) error {
 	}
 
 	// Delete the match
-	err = a.PSQL.Delete(database.Match{}, id).Error
+	err = a.PSQL.Delete(&database.Match{}, id).Error
 	if err != nil {
 		log.Printf("Error deleting match: %v\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON("Error deleting match")

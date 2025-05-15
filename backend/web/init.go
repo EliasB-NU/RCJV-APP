@@ -141,7 +141,7 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, rdb *redis.Client, mst *util.MST
 
 	mst.ElapsedTime()
 	// Start server
-	log.Println("Started Showmaster V3")
+	log.Println("Started RCJV V1")
 	err = rcjvApp.Listen(addrRCJVApp)
 	if err != nil {
 		log.Fatal("Error starting server: ", err)

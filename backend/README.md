@@ -131,8 +131,10 @@ These are the bodies returned by the backend
       "startTime": "time.Time",
       "duration": "time.Duration",
       "field": "string",
+      
       "institutionID": "number",
       "institutionName": "string",
+      
       "teamID": "number",
       "teamName": "string"
     }

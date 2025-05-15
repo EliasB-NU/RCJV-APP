@@ -42,6 +42,7 @@ const logout = async () => {
         <router-link to="/" class="hover:text-gray-300">Home</router-link>
         <router-link to="/teams" class="hover:text-gray-300">Teams & Institutions</router-link>
         <router-link to="/fields" class="hover:text-gray-300">Fields & ODS</router-link>
+        <router-link to="/matches" class="hover:text-gray-300">Matches</router-link>
       </nav>
 
       <!-- Logout Button -->
@@ -61,6 +62,7 @@ const logout = async () => {
       <router-link to="/" class="hover:text-gray-300">Home</router-link>
       <router-link to="/teams" class="hover:text-gray-300">Teams & Institutions</router-link>
       <router-link to="/fields" class="hover:text-gray-300">Fields & ODS</router-link>
+      <router-link to="/matches" class="hover:text-gray-300">Matches</router-link>
     </div>
   </header>
 </template>

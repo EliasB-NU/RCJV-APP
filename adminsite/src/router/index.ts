@@ -21,7 +21,12 @@ const router = createRouter({
     {
       path: '/fields',
       name: 'Fields & ODS',
-      component: () => import('@/views/Fields&ODSView.vue')
+      component: () => import('@/views/Fields&XLSXView.vue')
+    },
+    {
+      path: '/matches',
+      name: 'Matches',
+      component: () => import('@/views/MatchesView.vue'),
     }
   ],
 })
