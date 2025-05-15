@@ -4,7 +4,6 @@ import axios from 'axios'
 import PopUp from '@/components/PopUp.vue'
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import Cookies from 'js-cookie'
-import MatchEditComponent from '@/components/MatchEditComponent.vue'
 
 interface Match {
   id: number
@@ -42,9 +41,6 @@ async function fetchMatches() {
     console.error(error)
   }
 }
-
-const showEditComponent = ref<boolean>(false)
-const matchToEdit = ref<Match>({} as Match)
 
 const deleteMatch = async (id: number) => {
   try {
@@ -123,12 +119,6 @@ watch(league, async () => {
             <td class="p-3">{{ match.institutionName }}</td>
             <td class="p-3 flex space-x-2">
               <button
-                @click="matchToEdit=match; showEditComponent = true"
-                class="bg-gray-800 text-white px-3 py-1 rounded hover:bg-gray-700"
-              >
-                Edit
-              </button>
-              <button
                 @click="deleteMatch(match.id)"
                 class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
               >
@@ -140,13 +130,6 @@ watch(league, async () => {
         </table>
       </div>
     </div>
-
-    <MatchEditComponent
-      v-if="showEditComponent"
-      :match="matchToEdit"
-      @close="showEditComponent = false"
-      @finished="showEditComponent = false; fetchMatches()"
-    />
 
     <PopUp ref="popUp" />
   </div>

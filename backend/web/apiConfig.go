@@ -58,6 +58,13 @@ func (a *API) updateConfig(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON("Error updating config")
 	}
 
+	// Store config in the redis database
+	var ctx = context.Background()
+	a.RDB.Set(ctx, "rcjv:appEnabled", config.AppEnabled, 0)
+	a.RDB.Set(ctx, "rcjv:appName", config.EventName, 0)
+	a.RDB.Set(ctx, "rcjv:soccerURL", config.SoccerURL, 0)
+	a.RDB.Set(ctx, "rcjv:soccerAbbreviation", config.SoccerAbbreviation, 0)
+
 	return c.Status(fiber.StatusOK).JSON("config updated successfully")
 }
 

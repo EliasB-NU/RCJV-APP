@@ -86,21 +86,6 @@ func (a *API) generateODS(c *fiber.Ctx) error {
 	return c.Download(xlsx, fmt.Sprintf("matches_template_%s.xlsx", league))
 }
 
-func (a *API) updateMatch(c *fiber.Ctx) error {
-	if !util.CheckAuth(c.GetReqHeaders(), a.PSQL) {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{})
-	}
-	id, err := strconv.ParseUint(c.Params("id"), 10, 32)
-	if err != nil || id == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON("invalid id")
-	}
-
-	// ToDo(Update match)
-	// ToDo(Send update signal to all clients)
-
-	return c.Status(fiber.StatusOK).JSON("Update Successfully")
-}
-
 func (a *API) deleteMatch(c *fiber.Ctx) error {
 	if !util.CheckAuth(c.GetReqHeaders(), a.PSQL) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{})
