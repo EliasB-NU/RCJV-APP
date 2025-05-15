@@ -31,9 +31,9 @@ const password = ref<string>('')
 const editOrCreate = async () => {
   const url = ref<string>('')
   if (props.mode === 'edit' && props.user !== null) {
-    url.value = `/api/users/update/${props.user.id}`
+    url.value = `/api/v1/users/update/${props.user.id}`
   } else if (props.mode === 'create') {
-    url.value = "/api/users/create"
+    url.value = "/api/v1/users/create"
   }
   try {
     await axios

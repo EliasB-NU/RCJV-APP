@@ -33,7 +33,7 @@ if (!isLoginPage || !isResetPasswordPage) {
   } else {
     // Check if the token is still valid against backend
     axios
-      .post('/api/checkLogin',
+      .post('/api/v1/checkLogin',
         {
           token: Cookies.get('token'),
           deviceId: Cookies.get('deviceId')

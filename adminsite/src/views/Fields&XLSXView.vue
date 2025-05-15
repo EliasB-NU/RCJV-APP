@@ -17,7 +17,7 @@ const fields = ref<Field[]>([])
 async function fetchFields() {
   try {
     await axios
-      .get('/api/fields', {
+      .get('/api/v1/fields', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -36,7 +36,7 @@ async function fetchFields() {
 const createField = async () => {
   try {
     await axios
-      .post('/api/fields/create', {
+      .post('/api/v1/fields/create', {
         name: 'newField',
         league: 'soccerEntry'
       }, {
@@ -58,7 +58,7 @@ const createField = async () => {
 const updateField = async (fieldID: number, index: number) => {
   try {
     await axios
-      .post(`/api/fields/update/${fieldID}`, {
+      .post(`/api/v1/fields/update/${fieldID}`, {
         ...fields.value[index]
       }, {
         headers: {
@@ -81,7 +81,7 @@ const updateField = async (fieldID: number, index: number) => {
 const deleteField = async (id: number) => {
   try {
     await axios
-      .delete(`/api/fields/delete/${id}`, {
+      .delete(`/api/v1/fields/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -122,7 +122,7 @@ const uploadXLSX = async () => {
   }
   try {
     await axios
-      .post(`/api/matches/upload/${selectedOption.value}`, {
+      .post(`/api/v1/matches/upload/${selectedOption.value}`, {
         matches: selectedFile.value
       }, {
         headers: {
@@ -145,7 +145,7 @@ const newXLSX = async () => {
   }
   try {
     await axios
-      .get(`/api/matches/generate/${selectedOption.value}`, {
+      .get(`/api/v1/matches/generate/${selectedOption.value}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + Cookies.get('token'),

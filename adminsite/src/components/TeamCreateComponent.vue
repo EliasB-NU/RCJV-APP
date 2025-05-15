@@ -24,7 +24,7 @@ const institutions = ref<Institution[]>([])
 async function fetchInstitutions() {
   try {
     await axios
-      .get('/api/institutions', {
+      .get('/api/v1/institutions', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -41,7 +41,7 @@ async function fetchInstitutions() {
 const createTeam = async () => {
   try {
     await axios
-      .post('/api/teams/create', {
+      .post('/api/v1/teams/create', {
         name: team.value.name,
         league: team.value.league,
         institutionID: team.value.institutionID

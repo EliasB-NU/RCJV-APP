@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"rcjv-app/backend/config"
+	"rcjv-app/backend/data"
 	"rcjv-app/backend/database"
 	"rcjv-app/backend/util"
 	"rcjv-app/backend/web"
@@ -70,6 +71,14 @@ func main() {
 	// Routines
 	util.DeleteOldSessions(psql)
 	util.DeleteSoftDeletedUserKeys(psql)
+
+	// Soccer
+	var soccer = data.Soccer{
+		CTX:  context.Background(),
+		PSQL: psql,
+		RDB:  rdb,
+	}
+	soccer.FetchSoccerLeagues()
 
 	// Init Web
 	web.InitWeb(cfg, psql, rdb, &mst)

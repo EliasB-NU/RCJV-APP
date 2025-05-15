@@ -27,7 +27,7 @@ const league = ref<string>('soccerEntry')
 async function fetchMatches() {
   try {
     await axios
-      .get(`/api/matches/league/${league.value}`, {
+      .get(`/api/v1/matches/league/${league.value}`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -45,7 +45,7 @@ async function fetchMatches() {
 const deleteMatch = async (id: number) => {
   try {
     await axios
-    .delete(`/api/matches/delete/${id}`, {
+    .delete(`/api/v1/matches/delete/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

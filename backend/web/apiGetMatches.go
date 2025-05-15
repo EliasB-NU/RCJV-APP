@@ -67,7 +67,8 @@ func (a *API) getAllMatches(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
-		"data":          data,
+		"soccer":        "W.I.P.",
+		"other":         data,
 	})
 }
 
@@ -116,7 +117,8 @@ func (a *API) getMatchesLeague(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
-		"data":          data,
+		"soccer":        "W.I.P.",
+		"other":         data,
 	})
 }
 
@@ -172,7 +174,8 @@ func (a *API) getMatchesTeam(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
-		"data":          data,
+		"soccer":        "W.I.P.",
+		"other":         data,
 	})
 }
 
@@ -227,14 +230,12 @@ func (a *API) getMatchesInstitution(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
-		"data":          data,
+		"soccer":        "W.I.P.",
+		"other":         data,
 	})
 }
 
 func (a *API) getMatchesField(c *fiber.Ctx) error {
-	if c.Params("league") == "generate" {
-		return c.Next()
-	}
 	var (
 		league string
 		field  string
@@ -284,6 +285,7 @@ func (a *API) getMatchesField(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
-		"data":          data,
+		"soccer":        "W.I.P.",
+		"other":         data,
 	})
 }

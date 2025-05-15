@@ -13,7 +13,7 @@ const toggleMobileMenu = () => {
 const logout = async () => {
   try {
     await axios
-      .delete('/api/logout', {
+      .delete('/api/v1/logout', {
         data: {
           token: Cookies.get('token'),
           deviceId: Cookies.get('deviceId')

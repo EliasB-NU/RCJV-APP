@@ -16,7 +16,7 @@ const config = ref<Config>({} as Config)
 async function getConfig() {
   try {
     await axios
-      .get('/api/config', {
+      .get('/api/v1/config', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -34,7 +34,7 @@ async function getConfig() {
 const updateConfig = async () => {
   try {
     await axios
-      .post('/api/config/update', {
+      .post('/api/v1/config/update', {
         ...config.value
       }, {
         headers: {
@@ -50,8 +50,6 @@ const updateConfig = async () => {
     console.log(error)
   }
 }
-
-
 
 onMounted(getConfig)
 

@@ -20,7 +20,7 @@ const teams = ref<Team[]>([])
 async function fetchTeams() {
   try {
     await axios
-      .get('/api/teams', {
+      .get('/api/v1/teams', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -38,7 +38,7 @@ async function fetchTeams() {
 const deleteTeam = async (id: number) => {
   try {
     await axios
-      .delete(`/api/teams/delete/${id}`, {
+      .delete(`/api/v1/teams/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -70,7 +70,7 @@ const institutions = ref<Institution[]>([])
 async function fetchInstitutions() {
   try {
     await axios
-      .get('/api/institutions', {
+      .get('/api/v1/institutions', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -88,7 +88,7 @@ async function fetchInstitutions() {
 const deleteInstitution = async (id: number) => {
   try {
     await axios
-      .delete(`/api/institutions/delete/${id}`, {
+      .delete(`/api/v1/institutions/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -109,7 +109,7 @@ const createName = ref<string>('')
 const createInstitution = async () => {
   try {
     await axios
-      .post(`/api/institutions/create/${createName.value}`, {}, {
+      .post(`/api/v1/institutions/create/${createName.value}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -130,7 +130,7 @@ const createInstitution = async () => {
 const updateInstitution = async (id: number, index: number) => {
   try {
     await axios
-      .post(`/api/institutions/update/${id}/`, {
+      .post(`/api/v1/institutions/update/${id}/`, {
         name: institutions.value[index].name
       }, {
         headers: {

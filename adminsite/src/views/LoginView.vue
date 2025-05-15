@@ -10,7 +10,7 @@ const password = ref('')
 const handleLogin = async () => {
   try {
     await axios
-      .post('/api/login', {
+      .post('/api/v1/login', {
         email: email.value,
         password: password.value,
         deviceId: Cookies.get('deviceId'),

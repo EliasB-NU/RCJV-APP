@@ -124,7 +124,7 @@ These are the bodies returned by the backend
 ````json
 {
   "lastRequested": "time.Time",
-  "matches": [
+  "other": [ // For rescue and onstage matches
     {
       "id": "number",
       "updatedAt": "time.Time",
@@ -139,6 +139,29 @@ These are the bodies returned by the backend
       
       "teamID": "number",
       "teamName": "string"
+    }
+  ],
+  "soccer": [ // For soccer matches
+    {
+      "id": "number",
+      "updatedAt": "time.Time",
+      "league": "string | corresponds to the naming convention from the leagues body",
+      "name": "string",
+      "startTime": "time.Time",
+      "duration": "time.Duration",
+      "field": "string",
+
+      "institutionID_1": "number",
+      "institutionName_1": "string",
+
+      "teamID_1": "number",
+      "teamName_1": "string",
+
+      "institutionID_2": "number",
+      "institutionName_2": "string",
+
+      "teamID_2": "number",
+      "teamName_2": "string"
     }
   ]
 }
