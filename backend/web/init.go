@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
-	"github.com/valkey-io/valkey-go"
+	"github.com/redis/go-redis/v9"
 	"golang.org/x/net/websocket"
 	"gorm.io/gorm"
 	"log"
@@ -16,12 +16,12 @@ import (
 
 type API struct {
 	PSQL    *gorm.DB
-	Valkey  valkey.Client
+	RDB     *redis.Client
 	CFG     *config.Config
 	Clients map[*websocket.Conn]bool
 }
 
-func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.MST) {
+func InitWeb(cfg *config.Config, psql *gorm.DB, rdb *redis.Client, mst *util.MST) {
 	var (
 		addrRCJVApp      = "0.0.0.0:3006"
 		addrRCJVGameSite = "0.0.0.0:3007"
@@ -80,7 +80,7 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, valkey valkey.Client, mst *util.
 	rcjvApp.Mount("/api", api)
 	a := API{
 		PSQL:    psql,
-		Valkey:  valkey,
+		RDB:     rdb,
 		CFG:     cfg,
 		Clients: make(map[*websocket.Conn]bool),
 	}

@@ -1,6 +1,9 @@
 package main
 
 import (
+	"context"
+	"github.com/redis/go-redis/v9"
+	"gorm.io/gorm"
 	"log"
 	"os"
 	"rcjv-app/backend/config"
@@ -31,20 +34,43 @@ func main() {
 
 	// Get databases
 	var (
-		psql   = database.GetPSQL(cfg)
-		valkey = database.GetValkey(cfg)
+		psql = database.GetPSQL(cfg)
+		rdb  = database.GetRedis(cfg)
 	)
-	defer valkey.Close()
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			log.Fatalf("Error closing redis connection: %v\n", err)
+		}
+	}(rdb)
 	// Init PSQL
 	err := database.InitPSQLDatabase(psql)
 	if err != nil {
 		log.Fatalf("Error initializing PSQL database: %v\n", err)
 	}
 
+	// Cache config
+	go func(psql *gorm.DB, rdb *redis.Client) {
+		// New context
+		var ctx = context.Background()
+		// Get current config
+		var dbConfig database.Config
+		err := psql.First(&dbConfig).Error
+		if err != nil {
+			log.Fatalf("Error getting config: %v\n", err)
+		}
+
+		// Store config in database
+		rdb.Set(ctx, "rcjv:appEnabled", dbConfig.AppEnabled, 0)
+		rdb.Set(ctx, "rcjv:appName", dbConfig.EventName, 0)
+		rdb.Set(ctx, "rcjv:soccerURL", dbConfig.SoccerURL, 0)
+		rdb.Set(ctx, "rcjv:soccerAbbreviation", dbConfig.SoccerAbbreviation, 0)
+	}(psql, rdb)
+
 	// Routines
 	util.DeleteOldSessions(psql)
 	util.DeleteSoftDeletedUserKeys(psql)
 
 	// Init Web
-	web.InitWeb(cfg, psql, valkey, &mst)
+	web.InitWeb(cfg, psql, rdb, &mst)
 }

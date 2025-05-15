@@ -53,6 +53,9 @@ type Config struct {
 
 	AppEnabled bool   `json:"appEnabled"`
 	EventName  string `json:"eventName"`
+
+	SoccerURL          string `json:"soccerUrl"`
+	SoccerAbbreviation string `json:"soccerAbbreviation"`
 }
 
 type Institution struct {
@@ -198,8 +201,10 @@ func InitPSQLDatabase(db *gorm.DB) error {
 	result = db.First(&Config{})
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		var config = Config{
-			AppEnabled: false,
-			EventName:  "RCJ - Test",
+			AppEnabled:         false,
+			EventName:          "RCJ - Test",
+			SoccerURL:          "https://catigoal.com",
+			SoccerAbbreviation: "VO25",
 		}
 		err = db.Create(&config).Error
 		if err != nil {

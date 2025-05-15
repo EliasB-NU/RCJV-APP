@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"errors"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -62,18 +63,14 @@ func (a *API) updateConfig(c *fiber.Ctx) error {
 
 // Check if the app should be enabled
 func (a *API) getEnabled(c *fiber.Ctx) error {
-	var config database.Config
-	err := a.PSQL.Find(&config).Error
+	var ctx = context.Background()
+	enabled, err := a.RDB.Get(ctx, "rcjv:appEnabled").Result()
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			log.Println("Database config not found, unexpected behaviour!!!")
-			return c.Status(fiber.StatusInternalServerError).JSON("Database config not found, Unexpected behaviour!!!")
-		}
 		log.Printf("Error getting enabled config: %v\n", err)
-		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching config")
+		return c.Status(fiber.StatusInternalServerError).JSON("Error getting enabled config")
 	}
 
-	if config.AppEnabled {
+	if enabled == "true" {
 		return c.Status(fiber.StatusOK).JSON("App is enabled")
 	} else {
 		return c.Status(fiber.StatusLocked).JSON("App is disabled")
@@ -82,16 +79,12 @@ func (a *API) getEnabled(c *fiber.Ctx) error {
 
 // Get the name of the current event
 func (a *API) getName(c *fiber.Ctx) error {
-	var config database.Config
-	err := a.PSQL.Find(&config).Error
+	var ctx = context.Background()
+	name, err := a.RDB.Get(ctx, "rcjv:appName").Result()
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			log.Println("Database config not found, unexpected behaviour!!!")
-			return c.Status(fiber.StatusInternalServerError).JSON("Database config not found, Unexpected behaviour!!!")
-		}
 		log.Printf("Error getting enabled config: %v\n", err)
-		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching config")
+		return c.Status(fiber.StatusInternalServerError).JSON("Error getting enabled config")
 	}
 
-	return c.Status(fiber.StatusOK).JSON(config.EventName)
+	return c.Status(fiber.StatusOK).JSON(name)
 }

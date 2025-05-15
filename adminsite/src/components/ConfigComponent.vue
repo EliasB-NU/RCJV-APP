@@ -5,8 +5,10 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 interface Config {
-  appEnabled: boolean;
-  eventName: string;
+  appEnabled: boolean
+  eventName: string
+  soccerUrl: string
+  soccerAbbreviation: string
 }
 
 const config = ref<Config>({} as Config)
@@ -72,6 +74,16 @@ onMounted(getConfig)
             <div class="flex justify-between items-center">
               <label for="eventName">Event name:</label>
               <input v-model="config.eventName" type="text" id="eventName" class="input-field border-2 border-b-black rounded-sm"  required/>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label for="soccerUrl">Soccer URL:</label>
+              <input v-model="config.soccerUrl" type="text" id="soccerUrl" class="input-field border-2 border-b-black rounded-sm"  required/>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label for="soccerAbbreviation">Soccer Abbreviation:</label>
+              <input v-model="config.soccerAbbreviation" type="text" id="soccerAbbreviation" class="input-field border-2 border-b-black rounded-sm"  required/>
             </div>
           </div>
 
