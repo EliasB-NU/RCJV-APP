@@ -17,7 +17,10 @@ func GetRedis(cfg *config.Config) *redis.Client {
 	})
 
 	pong := rdp.Ping(context.Background())
-	log.Println(pong)
+	if pong.String() != "ping: PONG" {
+		log.Fatalf(pong.String())
+	}
+	log.Println("Redis connected")
 
 	return rdp
 }

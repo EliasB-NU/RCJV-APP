@@ -30,23 +30,23 @@ type payload struct {
 
 func (a *API) getAllMatches(c *fiber.Ctx) error {
 	var (
-		matches []database.Match
+		// Rescue & OnStage Matches
+		databaseMatches []database.Match
+		otherMatches    []payload
 
 		err error
 	)
 
-	// Payload of the message
-	var data []payload
-
-	// Get all matches and preload the team and institution
-	err = a.PSQL.Preload("Team").Preload("Institution").Find(&matches).Error
+	// Get all rescue matches
+	// Get all databaseMatches and preload the team and institution
+	err = a.PSQL.Preload("Team").Preload("Institution").Find(&databaseMatches).Error
 	if err != nil {
 		log.Printf("Error fetching games by league: %v\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching games")
 	}
 
-	//  Appends all the matches to the data
-	for _, v := range matches {
+	//  Appends all the databaseMatches to the data
+	for _, v := range databaseMatches {
 		d := payload{
 			ID:        v.ID,
 			UpdatedAt: v.UpdatedAt,
@@ -62,13 +62,26 @@ func (a *API) getAllMatches(c *fiber.Ctx) error {
 			TeamName:        v.Team.Name,
 		}
 
-		data = append(data, d)
+		otherMatches = append(otherMatches, d)
+	}
+
+	// Get soccer matches
+	soccer := a.RDB.JSONGet(a.CTX, "rcj:soccerMatches", "$")
+	if soccer.Err() != nil {
+		log.Printf("Error fetching soccer games: %v\n", soccer.Err())
+		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching soccer games")
+	}
+
+	expandedSoccer, err := soccer.Expanded()
+	if err != nil {
+		log.Printf("Error expanding soccer matches: %v\n", err)
+		return c.Status(fiber.StatusInternalServerError).JSON("Error expanding soccer matches")
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
-		"soccer":        "W.I.P.",
-		"other":         data,
+		"soccer":        expandedSoccer,
+		"other":         otherMatches,
 	})
 }
 
@@ -80,7 +93,7 @@ func (a *API) getMatchesLeague(c *fiber.Ctx) error {
 		err error
 	)
 
-	var data []payload
+	var load []payload
 
 	// Load all matches and preload the team and institution
 	err = a.PSQL.Preload("Team").Preload("Institution").Where("league = ?", league).Find(&matches).Error
@@ -93,7 +106,7 @@ func (a *API) getMatchesLeague(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching games")
 	}
 
-	// Appends all the matches to the data
+	// Appends all the matches to the load
 	for _, v := range matches {
 		d := payload{
 			ID:        v.ID,
@@ -112,13 +125,13 @@ func (a *API) getMatchesLeague(c *fiber.Ctx) error {
 			TeamName: v.Team.Name,
 		}
 
-		data = append(data, d)
+		load = append(load, d)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
 		"soccer":        "W.I.P.",
-		"other":         data,
+		"other":         load,
 	})
 }
 
@@ -128,7 +141,7 @@ func (a *API) getMatchesTeam(c *fiber.Ctx) error {
 		err    error
 	)
 
-	// Some parsing and error checking, if the data is valid
+	// Some parsing and error checking, if the load is valid
 	teamID, err = strconv.ParseUint(c.Params("teamID"), 10, 64)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON("Invalid teamID")
@@ -148,9 +161,9 @@ func (a *API) getMatchesTeam(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching team")
 	}
 
-	var data []payload
+	var load []payload
 
-	// Appends all the matches to the data
+	// Appends all the matches to the load
 	for _, m := range team.Matches {
 		d := payload{
 			ID:        m.ID,
@@ -169,13 +182,13 @@ func (a *API) getMatchesTeam(c *fiber.Ctx) error {
 			TeamName: team.Name,
 		}
 
-		data = append(data, d)
+		load = append(load, d)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
 		"soccer":        "W.I.P.",
-		"other":         data,
+		"other":         load,
 	})
 }
 
@@ -205,7 +218,7 @@ func (a *API) getMatchesInstitution(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching games")
 	}
 
-	var data []payload
+	var load []payload
 
 	for _, m := range matches {
 		d := payload{
@@ -225,13 +238,13 @@ func (a *API) getMatchesInstitution(c *fiber.Ctx) error {
 			TeamName: m.Team.Name,
 		}
 
-		data = append(data, d)
+		load = append(load, d)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
 		"soccer":        "W.I.P.",
-		"other":         data,
+		"other":         load,
 	})
 }
 
@@ -260,7 +273,7 @@ func (a *API) getMatchesField(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON("Error fetching games")
 	}
 
-	var data []payload
+	var load []payload
 
 	for _, m := range matches {
 		d := payload{
@@ -280,12 +293,12 @@ func (a *API) getMatchesField(c *fiber.Ctx) error {
 			TeamName: m.Team.Name,
 		}
 
-		data = append(data, d)
+		load = append(load, d)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"lastRequested": time.Now(),
 		"soccer":        "W.I.P.",
-		"other":         data,
+		"other":         load,
 	})
 }

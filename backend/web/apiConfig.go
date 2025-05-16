@@ -1,8 +1,8 @@
 package web
 
 import (
-	"context"
 	"errors"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 	"log"
@@ -59,19 +59,20 @@ func (a *API) updateConfig(c *fiber.Ctx) error {
 	}
 
 	// Store config in the redis database
-	var ctx = context.Background()
-	a.RDB.Set(ctx, "rcjv:appEnabled", config.AppEnabled, 0)
-	a.RDB.Set(ctx, "rcjv:appName", config.EventName, 0)
-	a.RDB.Set(ctx, "rcjv:soccerURL", config.SoccerURL, 0)
-	a.RDB.Set(ctx, "rcjv:soccerAbbreviation", config.SoccerAbbreviation, 0)
+	a.RDB.Set(a.CTX, "rcj:appEnabled", config.AppEnabled, 0)
+	a.RDB.Set(a.CTX, "rcj:appName", config.EventName, 0)
+	a.RDB.Set(a.CTX, "rcj:soccerURL", config.SoccerURL, 0)
+	a.RDB.Set(a.CTX, "rcj:soccerAbbreviation", config.SoccerAbbreviation, 0)
+
+	// Update soccer req url
+	a.RDB.Set(a.CTX, "rcj:soccerRURL", fmt.Sprintf("https://%s/rest/v1/%s", config.SoccerURL, config.SoccerAbbreviation), 0)
 
 	return c.Status(fiber.StatusOK).JSON("config updated successfully")
 }
 
 // Check if the app should be enabled
 func (a *API) getEnabled(c *fiber.Ctx) error {
-	var ctx = context.Background()
-	enabled, err := a.RDB.Get(ctx, "rcjv:appEnabled").Result()
+	enabled, err := a.RDB.Get(a.CTX, "rcj:appEnabled").Result()
 	if err != nil {
 		log.Printf("Error getting enabled config: %v\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON("Error getting enabled config")
@@ -86,8 +87,7 @@ func (a *API) getEnabled(c *fiber.Ctx) error {
 
 // Get the name of the current event
 func (a *API) getName(c *fiber.Ctx) error {
-	var ctx = context.Background()
-	name, err := a.RDB.Get(ctx, "rcjv:appName").Result()
+	name, err := a.RDB.Get(a.CTX, "rcj:appName").Result()
 	if err != nil {
 		log.Printf("Error getting enabled config: %v\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON("Error getting enabled config")

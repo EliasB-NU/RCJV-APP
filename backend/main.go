@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/redis/go-redis/v9"
-	"gorm.io/gorm"
 	"log"
 	"os"
 	"rcjv-app/backend/config"
@@ -21,6 +21,10 @@ func main() {
 	// RCJV APP V1
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.Println("Starting RCJV Backend ...")
+
+	// Create systemwide context
+	var ctx, cancel = context.WithCancel(context.Background())
+	defer cancel()
 
 	// Check if dev or prod, create tmp dir if dev
 	if os.Args[1] == "dev" {
@@ -51,35 +55,44 @@ func main() {
 	}
 
 	// Cache config
-	go func(psql *gorm.DB, rdb *redis.Client) {
-		// New context
-		var ctx = context.Background()
-		// Get current config
-		var dbConfig database.Config
-		err := psql.First(&dbConfig).Error
-		if err != nil {
-			log.Fatalf("Error getting config: %v\n", err)
-		}
+	// Get current config
+	var dbConfig database.Config
+	err = psql.First(&dbConfig).Error
+	if err != nil {
+		log.Fatalf("Error getting config: %v\n", err)
+	}
 
-		// Store config in database
-		rdb.Set(ctx, "rcjv:appEnabled", dbConfig.AppEnabled, 0)
-		rdb.Set(ctx, "rcjv:appName", dbConfig.EventName, 0)
-		rdb.Set(ctx, "rcjv:soccerURL", dbConfig.SoccerURL, 0)
-		rdb.Set(ctx, "rcjv:soccerAbbreviation", dbConfig.SoccerAbbreviation, 0)
-	}(psql, rdb)
+	// Store config in database
+	rdb.Set(ctx, "rcj:appEnabled", dbConfig.AppEnabled, 0)
+	rdb.Set(ctx, "rcj:appName", dbConfig.EventName, 0)
+	rdb.Set(ctx, "rcj:soccerURL", dbConfig.SoccerURL, 0)
+	rdb.Set(ctx, "rcj:soccerAbbreviation", dbConfig.SoccerAbbreviation, 0)
 
 	// Routines
 	util.DeleteOldSessions(psql)
 	util.DeleteSoftDeletedUserKeys(psql)
 
 	// Soccer
+	// Create url and initiate interface
+	url, err := rdb.Get(ctx, "rcj:soccerURL").Result()
+	if err != nil {
+		log.Printf("Error fetching url from RDB: %v\n", err)
+	}
+	abbrev, err := rdb.Get(ctx, "rcj:soccerAbbreviation").Result()
+	if err != nil {
+		log.Printf("Error fetching abbreviation from RDB: %v\n", err)
+	}
+	rdb.Set(ctx, "rcj:soccerRURL", fmt.Sprintf("https://%s/rest/v1/%s", url, abbrev), 0)
 	var soccer = data.Soccer{
-		CTX:  context.Background(),
+		CTX:  ctx,
 		PSQL: psql,
 		RDB:  rdb,
 	}
+	// Run fetch functions
 	soccer.FetchSoccerLeagues()
+	soccer.FetchSoccerMatches()
+	soccer.FetchSoccerStandings()
 
 	// Init Web
-	web.InitWeb(cfg, psql, rdb, &mst)
+	web.InitWeb(cfg, psql, rdb, ctx, &mst)
 }

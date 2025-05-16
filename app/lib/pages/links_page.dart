@@ -10,7 +10,7 @@ class LinksPage extends StatelessWidget {
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
-      throw 'Konnte die URL nicht öffnen: $url';
+      throw 'Could not open: $url';
     }
   }
 

@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
@@ -15,13 +16,14 @@ import (
 )
 
 type API struct {
+	CTX     context.Context
 	PSQL    *gorm.DB
 	RDB     *redis.Client
 	CFG     *config.Config
 	Clients map[*websocket.Conn]bool
 }
 
-func InitWeb(cfg *config.Config, psql *gorm.DB, rdb *redis.Client, mst *util.MST) {
+func InitWeb(cfg *config.Config, psql *gorm.DB, rdb *redis.Client, ctx context.Context, mst *util.MST) {
 	var (
 		addrRCJVApp      = "0.0.0.0:3006"
 		addrRCJVGameSite = "0.0.0.0:3007"
@@ -77,8 +79,9 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, rdb *redis.Client, mst *util.MST
 
 	// API
 	apiV1 := fiber.New()
-	rcjvApp.Mount("/apiV1/v1", apiV1)
+	rcjvApp.Mount("/api/v1", apiV1)
 	a := API{
+		CTX:     ctx,
 		PSQL:    psql,
 		RDB:     rdb,
 		CFG:     cfg,

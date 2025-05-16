@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.0.15
   url_launcher: ^6.1.7
+  http: ^1.4.0
 
 dev_dependencies:
   flutter_test:
@@ -29,7 +30,7 @@ flutter:
 #   ├── main.dart          # Hauptdatei mit App-Setup
 #   ├── pages
 #   │    ├── home_page.dart
-#   │    ├── spielplan_page.dart
+#   │    ├── matches_part.dart
 #   │    ├── infos_page.dart
 #   │    ├── links_page.dart
 #   │    └── einstellungen_page.dart

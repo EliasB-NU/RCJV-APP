@@ -4,6 +4,8 @@ import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
+const emit = defineEmits(['popUp'])
+
 interface Config {
   appEnabled: boolean
   eventName: string
@@ -27,6 +29,7 @@ async function getConfig() {
       config.value = res.data
     })
   } catch (error) {
+    emit('popUp', 'Error fetching config')
     console.log(error)
   }
 }
@@ -44,9 +47,11 @@ const updateConfig = async () => {
         }
       })
     .then(() => {
+      emit('popUp', 'Successfully updated config')
       getConfig()
     })
   } catch (error) {
+    emit('popUp', 'Error updating config')
     console.log(error)
   }
 }
