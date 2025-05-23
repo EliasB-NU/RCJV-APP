@@ -11,6 +11,7 @@ The default email is: `admin@example.com` and the default password: `admin`
 | /api/v1/config/update                      | Updated Config              | true  |                          | Updating the current config                              |
 | /api/v1/enabled                            |                             | false | if enabled: 200 else 423 | Returns if the app is enabled                            |
 | /api/v1/name                               |                             | false | name of event            | Get the name of the current Event                        |
+| /api/v1/rescueURL                          |                             | false | rescue url               | To get the url to the rescue standings                   |
 | /api/v1/leagues/update                     | leaguesBody                 | yes   |                          | To update all leagues                                    |
 | /api/v1/teams                              |                             | false | teamsBody                | Get all teams                                            |
 |                                            |                             |       |                          |                                                          |

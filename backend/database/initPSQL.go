@@ -56,6 +56,8 @@ type Config struct {
 
 	SoccerURL          string `json:"soccerUrl"`
 	SoccerAbbreviation string `json:"soccerAbbreviation"`
+
+	RescueURL string `json:"rescueUrl"`
 }
 
 type Institution struct {
@@ -205,6 +207,7 @@ func InitPSQLDatabase(db *gorm.DB) error {
 			EventName:          "RCJ - Test",
 			SoccerURL:          "https://catigoal.com",
 			SoccerAbbreviation: "VO25",
+			RescueURL:          "https://google.com",
 		}
 		err = db.Create(&config).Error
 		if err != nil {

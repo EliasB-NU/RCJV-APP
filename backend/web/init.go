@@ -5,7 +5,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
-	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/redis/go-redis/v9"
 	"golang.org/x/net/websocket"
 	"gorm.io/gorm"
@@ -61,17 +60,11 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, rdb *redis.Client, ctx context.C
 
 			AllowCredentials: false,
 		})
-
-		// Monitor
-		mon = monitor.New(monitor.Config{
-			Title: "Showmaster Monitor",
-		})
 	)
 	// Internal tools
 	// RCJV App
 	rcjvApp.Use(c)                                          // Cors Middleware
 	rcjvApp.Use(healthcheck.New(healthcheck.ConfigDefault)) // Healthcheck Middleware
-	rcjvApp.Use("/monitor", mon)                            // Monitor
 	rcjvApp.Get("/healthcheck", getHealthcheck)             // Healthcheck
 	// RCJV game site
 	rcjvGameSite.Use(c)
@@ -96,6 +89,7 @@ func InitWeb(cfg *config.Config, psql *gorm.DB, rdb *redis.Client, ctx context.C
 	apiV1.Post("/config/update", a.updateConfig) // [Auth] <- Updates the config
 	apiV1.Get("/enabled", a.getEnabled)          // -> Returns state of enabled config
 	apiV1.Get("/name", a.getName)                // -> Returns the current name of the event
+	apiV1.Get("/rescueURL", a.getRescueURL)      // -> Returns the Rescue Standings URL
 	// Admin API - Users
 	apiV1.Get("/users", a.getUsers)                 // [Auth] -> Returns all users
 	apiV1.Post("/users/create", a.createUser)       // [Auth] <- Creates a new user

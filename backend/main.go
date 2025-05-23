@@ -67,6 +67,7 @@ func main() {
 	rdb.Set(ctx, "rcj:appName", dbConfig.EventName, 0)
 	rdb.Set(ctx, "rcj:soccerURL", dbConfig.SoccerURL, 0)
 	rdb.Set(ctx, "rcj:soccerAbbreviation", dbConfig.SoccerAbbreviation, 0)
+	rdb.Set(ctx, "rcj:rescueURL", dbConfig.RescueURL, 0)
 
 	// Routines
 	util.DeleteOldSessions(psql)
@@ -82,7 +83,8 @@ func main() {
 	if err != nil {
 		log.Printf("Error fetching abbreviation from RDB: %v\n", err)
 	}
-	rdb.Set(ctx, "rcj:soccerRURL", fmt.Sprintf("https://%s/rest/v1/%s", url, abbrev), 0)
+	// https:// is already in the url you should enter in the frontend
+	rdb.Set(ctx, "rcj:soccerRURL", fmt.Sprintf("%s/rest/v1/%s", url, abbrev), 0)
 	var soccer = data.Soccer{
 		CTX:  ctx,
 		PSQL: psql,
@@ -91,7 +93,7 @@ func main() {
 	// Run fetch functions
 	soccer.FetchSoccerLeagues()
 	soccer.FetchSoccerMatches()
-	soccer.FetchSoccerStandings()
+	// soccer.FetchSoccerStandings()
 
 	// Init Web
 	web.InitWeb(cfg, psql, rdb, ctx, &mst)

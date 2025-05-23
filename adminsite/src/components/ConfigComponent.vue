@@ -11,6 +11,7 @@ interface Config {
   eventName: string
   soccerUrl: string
   soccerAbbreviation: string
+  rescueUrl: string
 }
 
 const config = ref<Config>({} as Config)
@@ -87,6 +88,11 @@ onMounted(getConfig)
             <div class="flex justify-between items-center">
               <label for="soccerAbbreviation">Soccer Abbreviation:</label>
               <input v-model="config.soccerAbbreviation" type="text" id="soccerAbbreviation" class="input-field border-2 border-b-black rounded-sm"  required/>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label for="rescueURL">Rescue URL:</label>
+              <input v-model="config.rescueUrl" type="text" id="rescueURL" class="input-field border-2 border-b-black rounded-sm" required/>
             </div>
           </div>
 
