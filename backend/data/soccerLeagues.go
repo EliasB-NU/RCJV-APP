@@ -54,8 +54,9 @@ func (s *Soccer) FetchSoccerLeagues() {
 			var rUrl = strings.TrimPrefix(fmt.Sprintf("%s%s", s.RDB.Get(s.CTX, "rcj:soccerRURL").String(), "/leagues?format=json"), "get rcj:soccerRURL: ")
 			agent := fiber.Get(rUrl).InsecureSkipVerify()
 			statusCode, body, errs := agent.Bytes()
-			if len(errs) > 0 || statusCode != 200 {
+			if errs != nil || statusCode != 200 {
 				log.Printf("Error fetching soccer leagues with code %d: %v\n", statusCode, errs)
+				return
 			}
 
 			// Parse into data
@@ -63,6 +64,7 @@ func (s *Soccer) FetchSoccerLeagues() {
 			err := json.Unmarshal(body, &data)
 			if err != nil {
 				log.Printf("Error unmarshalling leagues: %v\n", err)
+				return
 			}
 			data.LastUpdated = time.Now()
 
@@ -70,6 +72,7 @@ func (s *Soccer) FetchSoccerLeagues() {
 			err = s.RDB.JSONSet(s.CTX, "rcj:soccerLeagues", "$", data).Err()
 			if err != nil {
 				log.Printf("Error updating leagues in redis: %v\n", err)
+				return
 			}
 		}
 	}()
