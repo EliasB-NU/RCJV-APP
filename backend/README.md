@@ -142,28 +142,47 @@ These are the bodies returned by the backend
       "teamName": "string"
     }
   ],
-  "soccer": [ // For soccer matches
-    {
-      "id": "number",
-      "updatedAt": "time.Time",
-      "league": "string | corresponds to the naming convention from the leagues body",
-      "name": "string",
-      "startTime": "time.Time",
-      "duration": "time.Duration",
-      "field": "string",
-
-      "institutionID_1": "number",
-      "institutionName_1": "string",
-
-      "teamID_1": "number",
-      "teamName_1": "string",
-
-      "institutionID_2": "number",
-      "institutionName_2": "string",
-
-      "teamID_2": "number",
-      "teamName_2": "string"
-    }
-  ]
+  "soccer": { // For all soccer matches
+    "tournament_abbrev": "string",
+    "tournament_name": "string",
+    "tournament_header_type": "string",
+    "last_updated": "time.Time",
+    "matches": [
+      {
+        "number": "number",
+        "last_published": "string", // Format: yyyy-mm-ddThh:mm:ss
+        "league": "string",
+        "league_stage": "string",
+        "group_name": "string",
+        "start": "string", // Format: yyyy-mm-ddThh-mm-ss
+        "duration": "string", // Format: hh:mm:ss
+        "pitch": "string", // Field
+        "goals1": "number",
+        "points1": "number",
+        "team1": {
+          "id": "number",
+          "name": "string",
+          "affiliation": "string", // Institution
+          "startnumber": "number",
+          "external_key": "string"
+        },
+        "goals2": "number",
+        "points2": "number",
+        "team2": {
+          "id": "number",
+          "name": "string",
+          "affiliation": "string",
+          "startnumber": "number",
+          "external_key": "string"
+        },
+        "referees": [
+          {
+            "first_name": "string",
+            "last_name": "string"
+          }
+        ]
+      }
+    ]
+  }
 }
 ````
