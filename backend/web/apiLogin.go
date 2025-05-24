@@ -138,7 +138,7 @@ func (a *API) checkIfUserIsLoggedIn(c *fiber.Ctx) error {
 
 	// Check if user is logged in
 	var browserToken database.BrowserToken
-	err = a.PSQL.Where("device_id = ? AND token = ?", data.DeviceId, data.Token).Find(&browserToken).Error
+	err = a.PSQL.Where("device_id = ? AND token = ?", data.DeviceId, data.Token).First(&browserToken).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return c.Status(fiber.StatusForbidden).JSON("user is not logged in")

@@ -1,13 +1,13 @@
-// pages/einstellungen_page.dart
+// pages/settings_page.dart
 import 'package:flutter/material.dart';
 
-class EinstellungenPage extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   @override
-  _EinstellungenPageState createState() => _EinstellungenPageState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _EinstellungenPageState extends State<EinstellungenPage> {
-  bool notificationsEnabled = false; // Benachrichtigungen standardmäßig aus
+class _SettingsPageState extends State<SettingsPage> {
+  bool notificationsEnabled = false; // Notifications off by default
 
   void _showInfoDialog() {
     showDialog(
@@ -27,7 +27,7 @@ class _EinstellungenPageState extends State<EinstellungenPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Schließen'),
+            child: Text('Close'),
           ),
         ],
       ),
@@ -41,9 +41,9 @@ class _EinstellungenPageState extends State<EinstellungenPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Benachrichtigungen', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          Text('Notifications', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           SwitchListTile(
-            title: Text('Benachrichtigungen aktivieren'),
+            title: Text('Activate notifications'),
             value: notificationsEnabled,
             onChanged: (bool value) {
               setState(() {

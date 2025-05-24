@@ -1,4 +1,5 @@
 Database:
+  # Tested with Postgresql 17
   PSQL:
     Host: "psql.example.com"
     Port: 5432
@@ -6,10 +7,8 @@ Database:
     Password: "password"
     DBName: "showmaster_db"
     Timezone: "Europe/Berlin"
-  # You could also use redis
-  # But you need the RedisJSON module installed
-  # I still recommend using Valkey!
-  Valkey:
+  # Tested with redis-8
+  Redis:
     Host: "redis.example.com"
     Port: 6379
     User: "showmaster"

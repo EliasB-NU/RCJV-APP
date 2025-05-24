@@ -16,7 +16,7 @@ const users = ref<User[]>([])
 async function fetchUsers() {
   try {
     await axios
-      .get('/api/users', {
+      .get('/api/v1/users', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -34,7 +34,7 @@ async function fetchUsers() {
 const deleteUser = async (id: number) => {
   try {
     await axios
-      .delete(`/api/users/${id}`, {
+      .delete(`/api/v1/users/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',

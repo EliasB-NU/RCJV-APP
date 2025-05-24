@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
-import 'pages/spielplan_page.dart';
+import 'pages/matches_part.dart';
 import 'pages/home_page.dart';
 import 'widgets/side_menu.dart';
-import 'pages/einstellungen_part.dart';
+import 'pages/settings_part.dart';
 import 'pages/links_page.dart';
-import 'pages/endpoint_test.dart';
+import 'package:http/http.dart' as http;
 
 
 
 void main() {
+  // Get config
+
   runApp(RobocupJuniorApp());
+}
+Future<http.Response> fetchAlbum() {
+  return http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
 }
 
 class RobocupJuniorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Robocup Junior Vöhringen',
+      title: 'RoboCup Junior',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: MainPage(),
       debugShowCheckedModeBanner: false,
@@ -36,8 +41,7 @@ class _MainPageState extends State<MainPage> {
   SpielplanPage(), // <- wichtig: hier muss SpielplanPage eingebunden sein
   PlaceholderWidget(title: 'Infos'),
   LinksPage(),
-  EinstellungenPage(),
-  EndpointTestPage(),
+  SettingsPage(),
   ];
 
   void _onItemTapped(int index) {

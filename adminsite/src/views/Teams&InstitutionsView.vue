@@ -20,7 +20,7 @@ const teams = ref<Team[]>([])
 async function fetchTeams() {
   try {
     await axios
-      .get('/api/teams', {
+      .get('/api/v1/teams', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -38,7 +38,7 @@ async function fetchTeams() {
 const deleteTeam = async (id: number) => {
   try {
     await axios
-      .delete(`/api/teams/delete/${id}`, {
+      .delete(`/api/v1/teams/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -70,7 +70,7 @@ const institutions = ref<Institution[]>([])
 async function fetchInstitutions() {
   try {
     await axios
-      .get('/api/institutions', {
+      .get('/api/v1/institutions', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -88,7 +88,7 @@ async function fetchInstitutions() {
 const deleteInstitution = async (id: number) => {
   try {
     await axios
-      .delete(`/api/institutions/delete/${id}`, {
+      .delete(`/api/v1/institutions/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -109,7 +109,7 @@ const createName = ref<string>('')
 const createInstitution = async () => {
   try {
     await axios
-      .post(`/api/institutions/create/${createName.value}`, {}, {
+      .post(`/api/v1/institutions/create/${createName.value}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -130,7 +130,7 @@ const createInstitution = async () => {
 const updateInstitution = async (id: number, index: number) => {
   try {
     await axios
-      .post(`/api/institutions/update/${id}/`, {
+      .post(`/api/v1/institutions/update/${id}/`, {
         name: institutions.value[index].name
       }, {
         headers: {
@@ -168,7 +168,7 @@ onMounted(async () => {
           <button
             @click="showCreateTeam = true"
             class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
-            Create User
+            Create Team
           </button>
         </div>
 
@@ -224,7 +224,7 @@ onMounted(async () => {
       <div class="bg-white p-6 rounded-2xl shadow-lg overflow-y-auto">
         <div class="mb-4">
           <h2 class="text-2xl font-semibold mb-4">Institutions</h2>
-          <button @click="createInstitution" class="bg-gray-700 text-white px-4 py-2 rounded">
+          <button @click="createInstitution" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded">
             + Create Institution
           </button>
         </div>
@@ -238,7 +238,7 @@ onMounted(async () => {
           />
           <span class="text-gray-500">Teams: {{ institution.numberTeams }}</span>
           <button @click="updateInstitution(institution.id, index)"
-                  class="bg-gray-700 text-white px-2 py-1 rounded">
+                  class="bg-gray-800 hover:bg-gray-700 text-white px-2 py-1 rounded">
             Update
           </button>
           <button @click="deleteInstitution(institution.id)"

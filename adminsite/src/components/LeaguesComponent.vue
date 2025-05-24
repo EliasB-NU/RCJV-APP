@@ -24,7 +24,7 @@ const leagues = ref<Leagues>({} as Leagues)
 const fetchLeagues = async () => {
   try {
     await axios
-      .get('/api/leagues')
+      .get('/api/v1/leagues')
       .then((res) => {
         leagues.value = res.data
       })
@@ -36,7 +36,7 @@ const fetchLeagues = async () => {
 const updateLeagues = async () => {
   try {
     await axios
-      .patch('/api/leagues/update', {
+      .patch('/api/v1/leagues/update', {
         ...leagues.value
       }, {
         headers: {

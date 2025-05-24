@@ -35,7 +35,7 @@ const institutions = ref<Institution[]>([])
 async function fetchInstitutions() {
   try {
     await axios
-      .get('/api/institutions', {
+      .get('/api/v1/institutions', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -52,7 +52,7 @@ async function fetchInstitutions() {
 const updateTeam = async () => {
   try {
     await axios
-      .post(`/api/teams/update/${props.team.id}`, {
+      .post(`/api/v1/teams/update/${props.team.id}`, {
         name: data.value.name,
         league: data.value.league,
         institutionID: data.value.institutionID

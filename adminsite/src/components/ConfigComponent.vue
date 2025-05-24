@@ -4,9 +4,14 @@ import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
+const emit = defineEmits(['popUp'])
+
 interface Config {
-  appEnabled: boolean;
-  eventName: string;
+  appEnabled: boolean
+  eventName: string
+  soccerUrl: string
+  soccerAbbreviation: string
+  rescueUrl: string
 }
 
 const config = ref<Config>({} as Config)
@@ -14,7 +19,7 @@ const config = ref<Config>({} as Config)
 async function getConfig() {
   try {
     await axios
-      .get('/api/config', {
+      .get('/api/v1/config', {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -25,6 +30,7 @@ async function getConfig() {
       config.value = res.data
     })
   } catch (error) {
+    emit('popUp', 'Error fetching config')
     console.log(error)
   }
 }
@@ -32,7 +38,7 @@ async function getConfig() {
 const updateConfig = async () => {
   try {
     await axios
-      .post('/api/config/update', {
+      .post('/api/v1/config/update', {
         ...config.value
       }, {
         headers: {
@@ -42,14 +48,14 @@ const updateConfig = async () => {
         }
       })
     .then(() => {
+      emit('popUp', 'Successfully updated config')
       getConfig()
     })
   } catch (error) {
+    emit('popUp', 'Error updating config')
     console.log(error)
   }
 }
-
-
 
 onMounted(getConfig)
 
@@ -72,6 +78,21 @@ onMounted(getConfig)
             <div class="flex justify-between items-center">
               <label for="eventName">Event name:</label>
               <input v-model="config.eventName" type="text" id="eventName" class="input-field border-2 border-b-black rounded-sm"  required/>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label for="soccerUrl">Soccer URL:</label>
+              <input v-model="config.soccerUrl" type="text" id="soccerUrl" class="input-field border-2 border-b-black rounded-sm"  required/>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label for="soccerAbbreviation">Soccer Abbreviation:</label>
+              <input v-model="config.soccerAbbreviation" type="text" id="soccerAbbreviation" class="input-field border-2 border-b-black rounded-sm"  required/>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label for="rescueURL">Rescue URL:</label>
+              <input v-model="config.rescueUrl" type="text" id="rescueURL" class="input-field border-2 border-b-black rounded-sm" required/>
             </div>
           </div>
 
