@@ -4,6 +4,7 @@ import 'pages/home_page.dart';
 import 'widgets/side_menu.dart';
 import 'pages/einstellungen_part.dart';
 import 'pages/links_page.dart';
+import 'pages/endpoint_test.dart';
 
 
 
@@ -36,6 +37,7 @@ class _MainPageState extends State<MainPage> {
   PlaceholderWidget(title: 'Infos'),
   LinksPage(),
   EinstellungenPage(),
+  EndpointTestPage(),
   ];
 
   void _onItemTapped(int index) {

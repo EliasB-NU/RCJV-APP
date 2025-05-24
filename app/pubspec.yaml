@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^0.13.6 # oder aktuelle Version
 
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.0.15
@@ -18,6 +19,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
 
 
@@ -32,6 +34,7 @@ flutter:
 #   │    ├── spielplan_page.dart
 #   │    ├── infos_page.dart
 #   │    ├── links_page.dart
+#   │    ├── endpoint_test.dart
 #   │    └── einstellungen_page.dart
 #   ├── widgets
 #   │    └── side_menu.dart

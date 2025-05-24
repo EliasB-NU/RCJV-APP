@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../pages/endpoint_test.dart'; // hinzufügen
 
 class SideMenu extends StatelessWidget {
   final Function(int) onItemTapped;
@@ -38,6 +39,11 @@ class SideMenu extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Einstellungen'),
             onTap: () => onItemTapped(4),
+          ),
+          ListTile(
+            leading: Icon(Icons.cloud_download),
+            title: Text('Endpoint Test'),
+            onTap: () => onItemTapped(5), // wichtig
           ),
         ],
       ),
