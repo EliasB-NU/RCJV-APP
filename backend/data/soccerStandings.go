@@ -19,9 +19,10 @@ func (s *Soccer) FetchSoccerStandings() {
 			<-ticker.C
 			// Make initial request
 			var rUrl = strings.TrimPrefix(fmt.Sprintf("%s%s", s.RDB.Get(s.CTX, "rcj:soccerRURL").String(), "/standings?format=json"), "get rcj:soccerRURL: ")
+			log.Println(rUrl)
 			agent := fiber.Get(rUrl).InsecureSkipVerify()
 			statusCode, body, errs := agent.Bytes()
-			if len(errs) > 0 || statusCode != 200 {
+			if len(errs) > 0 {
 				log.Printf("Error fetching soccer leagues with code %d: %v\n", statusCode, errs)
 			}
 
