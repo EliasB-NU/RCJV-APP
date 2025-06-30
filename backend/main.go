@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/redis/go-redis/v9"
 	"log"
 	"os"
 	"rcjv-app/backend/config"
@@ -11,6 +10,8 @@ import (
 	"rcjv-app/backend/database"
 	"rcjv-app/backend/util"
 	"rcjv-app/backend/web"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {

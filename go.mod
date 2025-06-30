@@ -4,7 +4,7 @@ go 1.24.3
 
 require (
 	github.com/gofiber/fiber/v2 v2.52.6
-	github.com/redis/go-redis/v9 v9.8.0
+	github.com/redis/go-redis/v9 v9.9.0
 	github.com/xuri/excelize/v2 v2.9.1
 	golang.org/x/crypto v0.38.0
 	golang.org/x/net v0.40.0

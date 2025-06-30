@@ -1,10 +1,11 @@
 package config
 
 import (
-	"gopkg.in/yaml.v3"
 	"log"
 	"os"
 	"strconv"
+
+	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
@@ -20,7 +21,7 @@ type Config struct {
 		Redis struct {
 			Host     string `yaml:"Host"`
 			Port     int    `yaml:"Port"`
-			DB       int    `yaml:"PSQL"`
+			DB       int    `yaml:"DB"`
 			User     string `yaml:"User"`
 			Password string `yaml:"Password"`
 		} `yaml:"Redis"`
@@ -31,7 +32,7 @@ func GetConfig() *Config {
 	var config *Config
 
 	if os.Args[1] == "dev" {
-		file, err := os.Open("./config.yaml")
+		file, err := os.Open("app/assets/config.yaml")
 		if err != nil {
 			log.Fatalf("Error opening config file: %v", err)
 		}
