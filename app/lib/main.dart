@@ -42,6 +42,7 @@ class _MainPageState extends State<MainPage> {
   PlaceholderWidget(title: 'Infos'),
   LinksPage(),
   SettingsPage(),
+  PlaceholderWidget(title: 'endpointtest'),
   ];
 
   void _onItemTapped(int index) {
