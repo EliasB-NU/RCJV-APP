@@ -93,50 +93,66 @@ class _HomePageState extends State<HomePage> {
 
 
 
-  Future<void> _saveTeamFavorite() async {
-    if (selectedLeague == null || selectedTeam == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Bitte wähle deine Liga UND Team aus'), duration: Duration(seconds: 1)),
-      );
-      return;
-    }
+Future<void> _saveTeamFavorite() async {
+  if (selectedLeague == null || selectedTeam == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Bitte wähle deine Liga UND Team aus'), duration: Duration(seconds: 1)),
+    );
+    return;
+  }
 
-    final prefs = await SharedPreferences.getInstance();
-    List<String> favorites = prefs.getStringList('teamFavorites') ?? [];
-    favorites.add('Liga: $selectedLeague, Team: $selectedTeam');
+  final prefs = await SharedPreferences.getInstance();
+  List<String> favorites = prefs.getStringList('teamFavorites') ?? [];
+  final entry = '$selectedLeague:$selectedTeam';
+
+  if (!favorites.contains(entry)) {
+    favorites.add(entry);
     await prefs.setStringList('teamFavorites', favorites);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Favorit unter „Teams“ gespeichert'), duration: Duration(seconds: 1)),
     );
-
-    setState(() {
-      selectedLeague = null;
-      selectedTeam = null;
-    });
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Dieses Team ist bereits gespeichert'), duration: Duration(seconds: 1)),
+    );
   }
 
-  Future<void> _saveInstitutionFavorite() async {
-    if (selectedInstitution == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Bitte wähle deine Institution aus'), duration: Duration(seconds: 1)),
-      );
-      return;
-    }
+  setState(() {
+    selectedLeague = null;
+    selectedTeam = null;
+  });
+}
 
-    final prefs = await SharedPreferences.getInstance();
-    List<String> favorites = prefs.getStringList('institutionFavorites') ?? [];
-    favorites.add('Institution: $selectedInstitution');
+Future<void> _saveInstitutionFavorite() async {
+  if (selectedInstitution == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Bitte wähle deine Institution aus'), duration: Duration(seconds: 1)),
+    );
+    return;
+  }
+
+  final prefs = await SharedPreferences.getInstance();
+  List<String> favorites = prefs.getStringList('institutionFavorites') ?? [];
+  final entry = selectedInstitution!;
+
+  if (!favorites.contains(entry)) {
+    favorites.add(entry);
     await prefs.setStringList('institutionFavorites', favorites);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Favorit unter „Institution“ gespeichert'), duration: Duration(seconds: 1)),
     );
-
-    setState(() {
-      selectedInstitution = null;
-    });
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Diese Institution ist bereits gespeichert'), duration: Duration(seconds: 1)),
+    );
   }
+
+  setState(() {
+    selectedInstitution = null;
+  });
+}
 
   @override
   Widget build(BuildContext context) {

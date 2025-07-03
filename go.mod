@@ -3,13 +3,8 @@ module rcjv-app
 go 1.24.3
 
 require (
-<<<<<<< HEAD
-	github.com/gofiber/fiber/v2 v2.52.6
-	github.com/redis/go-redis/v9 v9.9.0
-=======
 	github.com/gofiber/fiber/v2 v2.52.8
 	github.com/redis/go-redis/v9 v9.11.0
->>>>>>> f9bd300b6bb9fa3e2237426b77c45c67c45698ff
 	github.com/xuri/excelize/v2 v2.9.1
 	golang.org/x/crypto v0.39.0
 	golang.org/x/net v0.41.0
