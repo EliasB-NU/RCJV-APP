@@ -32,7 +32,7 @@ func GetConfig() *Config {
 	var config *Config
 
 	if os.Args[1] == "dev" {
-		file, err := os.Open("app/assets/config.yaml")
+		file, err := os.Open("config.yaml")
 		if err != nil {
 			log.Fatalf("Error opening config file: %v", err)
 		}

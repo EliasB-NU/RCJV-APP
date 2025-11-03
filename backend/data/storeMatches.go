@@ -2,13 +2,15 @@ package data
 
 import (
 	"fmt"
-	"github.com/xuri/excelize/v2"
-	"gorm.io/gorm"
 	"log"
 	"rcjv-app/backend/database"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
+
+	"github.com/xuri/excelize/v2"
+	"gorm.io/gorm"
 )
 
 // StoreMatches parses the csv file and stores the matches in the database.
@@ -157,6 +159,7 @@ func parseSheet(league string, sheet string, teamsInstitution map[string]databas
 
 func parseExcelDateTime(dateStr, timeStr string) (time.Time, error) {
 	combined := fmt.Sprintf("%s %s", dateStr, timeStr)
-	layout := "02-01-06 15:04"
+	combined = strings.ReplaceAll(combined, " 0", " ")
+	layout := "01-02-06 3:04:05 PM"
 	return time.Parse(layout, combined)
 }

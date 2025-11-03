@@ -2,12 +2,13 @@ package web
 
 import (
 	"errors"
-	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 	"log"
 	"rcjv-app/backend/database"
 	"rcjv-app/backend/util"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 // Returns all teams in the below defined schema.

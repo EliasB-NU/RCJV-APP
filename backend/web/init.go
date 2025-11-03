@@ -2,16 +2,17 @@ package web
 
 import (
 	"context"
+	"log"
+	"rcjv-app/backend/config"
+	"rcjv-app/backend/util"
+	"strings"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/redis/go-redis/v9"
 	"golang.org/x/net/websocket"
 	"gorm.io/gorm"
-	"log"
-	"rcjv-app/backend/config"
-	"rcjv-app/backend/util"
-	"strings"
 )
 
 type API struct {

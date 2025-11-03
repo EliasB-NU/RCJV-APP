@@ -24,7 +24,7 @@ The default email is: `admin@example.com` and the default password: `admin`
 | /api/v1/users/update/:id                   | UsersBody with Password     | true  |                          | Update an existing owner                                  |
 | /api/v1/users/delete/:id                   |                             | true  | 200                      | Delete a user (can be restored)                           |
 |                                            |                             |       |                          |                                                           |
-| /api/v1/teams                              |                             | false | teamsBody                | Get all teams                                             |
+| /api/v1/teams:filter                       |                             | false | teamsBody                | Get all teams                                             |
 | /api/v1/teams/create                       | teamsBody                   | true  |                          | Create a new team                                         |
 | /api/v1/teams/update/:id                   | teamsBody                   | true  |                          | Update an existing team                                   |
 | /api/v1/teams/delete/:id                   | id                          | true  |                          | Delete a team (can be restored)                           |

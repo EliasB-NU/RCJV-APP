@@ -2,10 +2,11 @@ package database
 
 import (
 	"errors"
-	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 	"log"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 type User struct {
